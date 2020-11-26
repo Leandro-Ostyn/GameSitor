@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/mainGameFragment">
+
+    <fragment
+        android:id="@+id/mainGameFragment"
+        android:name="be.vives.gamesitor.MainGameFragment"
+        android:label="main_game_fragment"
+        tools:layout="@layout/main_game_fragment" >
+        <action
+            android:id="@+id/action_mainGameFragment_to_bagFragment"
+            app:destination="@id/bagFragment" />
+        <action
+            android:id="@+id/action_mainGameFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+        <action
+            android:id="@+id/action_mainGameFragment_to_viewHeroFragment"
+            app:destination="@id/viewHeroFragment" />
+        <action
+            android:id="@+id/action_mainGameFragment_to_stageFragment"
+            app:destination="@id/stageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="be.vives.gamesitor.ShopFragment"
+        android:label="shop_fragment"
+        tools:layout="@layout/shop_fragment" >
+        <action
+            android:id="@+id/action_shopFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stageFragment"
+        android:name="be.vives.gamesitor.StageFragment"
+        android:label="stage_fragment"
+        tools:layout="@layout/stage_fragment" >
+        <action
+            android:id="@+id/action_stageFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewHeroFragment"
+        android:name="be.vives.gamesitor.ViewHeroFragment"
+        android:label="view_hero_fragment"
+        tools:layout="@layout/view_hero_fragment" >
+        <action
+            android:id="@+id/action_viewHeroFragment_to_bagFragment"
+            app:destination="@id/bagFragment" />
+        <action
+            android:id="@+id/action_viewHeroFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bagFragment"
+        android:name="be.vives.gamesitor.BagFragment"
+        android:label="bag_fragment"
+        tools:layout="@layout/Inventory_fragment" >
+        <action
+            android:id="@+id/action_bagFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment" />
+    </fragment>
+</navigation>
