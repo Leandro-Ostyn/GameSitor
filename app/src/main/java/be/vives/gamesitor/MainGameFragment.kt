@@ -19,13 +19,13 @@ class MainGameFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_game_fragment, container, false)
         // Inflate the layout for this fragment
         binding.btnBattle.setOnClickListener {
-            findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToStageFragment())
+           findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToStageFragment())
         }
         binding.btnEquipment.setOnClickListener {
-            findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToViewHeroFragment())
+           findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToViewHeroFragment())
         }
         binding.btnInventory.setOnClickListener {
-            findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToBagFragment())
+           findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToBagFragment())
         }
         binding.btnShop.setOnClickListener {
             findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToShopFragment())

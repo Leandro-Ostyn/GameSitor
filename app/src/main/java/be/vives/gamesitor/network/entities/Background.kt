@@ -1,4 +1,4 @@
-package be.vives.gamesitor.model
+package be.vives.gamesitor.network.entities
 
 class Background {
     var backgroundId: Int = 0

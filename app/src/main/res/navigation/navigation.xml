@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/stageFragment"
-        android:name="be.vives.gamesitor.StageFragment"
+        android:name="be.vives.gamesitor.stage.StageFragment"
         android:label="stage_fragment"
         tools:layout="@layout/stage_fragment" >
         <action

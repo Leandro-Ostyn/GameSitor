@@ -3,19 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="be.vives.gamesitor.stage.StageViewmodel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/level1"
-        tools:context=".StageFragment" >
+        tools:context=".stage.StageFragment">
 
         <ProgressBar
             android:id="@+id/HpbarEnemy"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:max="@{viewmodel.hpEnemyStart}"
+            android:progress="@{viewmodel.hpCharacterEnemy}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.986"
@@ -24,11 +32,12 @@
             app:layout_constraintVertical_bias="0.04" />
 
         <ProgressBar
-            android:id="@+id/HpBarWarrior"
-            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/HpBarHero"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:max="@{viewmodel.hpheroStart}"
+            android:progress="@{viewmodel.hpCharacterHero}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -40,12 +49,12 @@
             android:id="@+id/lblTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Timer  here"
+            android:text="Timer comes here in future"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/HpbarEnemy"
             app:layout_constraintHorizontal_bias="0.555"
-            app:layout_constraintStart_toEndOf="@+id/HpBarWarrior"
+            app:layout_constraintStart_toEndOf="@+id/HpBarHero"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.04" />
 
