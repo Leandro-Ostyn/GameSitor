@@ -23,28 +23,6 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         viewModelExample = ViewModelProvider(this).get(ViewModelExample::class.java)
-        viewModelExample.repositoryExample.gategories.observe(this, Observer {
-            for (category in it){
-                Timber.i(category.name)
-            }
-        })
-
-        viewModelExample.repositoryExample.backgrounds.observe(this, Observer {
-            for (backgrounds in it){
-                Timber.i(backgrounds.name)
-            }
-        })
-
-        viewModelExample.repositoryExample.getCategories()
-        viewModelExample.repositoryExample.getBackgrounds()
-    //    viewModelExample.repositoryExample.getStats(1)
-
-     //   viewModelExample.stats.observe(this, Observer {
-     //       Timber.i("${it.lifepoints} this was the result of stats ")
-     //   })
-       /// viewModelExample.setStatsId(1)
-     //   viewModelExample.setTypeId(1)
-
     }
 
     override fun onDestroy() {

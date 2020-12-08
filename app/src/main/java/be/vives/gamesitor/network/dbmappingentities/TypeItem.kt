@@ -1,6 +1,6 @@
-package be.vives.gamesitor.network.entities.dbmappingentities
+package be.vives.gamesitor.network.dbmappingentities
 
-import be.vives.gamesitor.network.entities.Item
+import be.vives.gamesitor.domain.models.Item
 
 //IS only needed if mapping directly from DB
 data class TypeItem(

@@ -1,9 +1,7 @@
 package be.vives.gamesitor.network
 
-import be.vives.gamesitor.network.entities.Background
-import be.vives.gamesitor.network.entities.Category
-import be.vives.gamesitor.network.entities.Stats
-import be.vives.gamesitor.network.entities.Type
+import be.vives.gamesitor.domain.models.Background
+import be.vives.gamesitor.domain.models.Category
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -11,8 +9,6 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 const val BASE_URL = "https://sitorapi.azurewebsites.net/api/"
 
@@ -36,10 +32,10 @@ interface SitorApiService {
     @GET("CategoryApi")
      fun getCategories(): Deferred<List<Category>>
 
-    @GET("StatsApi/{id}")
-     fun getStats(
-        @Path("id") id: Int
-    ): Deferred<Stats>
+//    @GET("StatsApi/{id}")
+//     fun getStats(
+//        @Path("id") id: Int
+//    ): Deferred<DatabaseStats>
 
     @GET("BackgroundApi")
     fun getBackgrounds(

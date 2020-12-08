@@ -4,35 +4,34 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import be.vives.gamesitor.database.dao.BackgroundDao
+import be.vives.gamesitor.database.dao.PlayerDao
+import be.vives.gamesitor.database.dao.SettingsDao
 
-@Database(entities = [GameSitor::class], version = 1, exportSchema = false)
+@Database(
+    entities = arrayOf(DatabasePlayer::class, DatabaseSettings::class),
+    version = 1,
+    exportSchema = false
+)
 abstract class GameSitorDatabase : RoomDatabase() {
 
- //   abstract val playerDatabaseDao: PlayerDatabaseDao
+    abstract val backgroundDao: BackgroundDao
+    abstract val playerDao: PlayerDao
+    abstract val settingsDao: SettingsDao
+}
+    private lateinit var INSTANCE: GameSitorDatabase
 
-    companion object {
-
-        @Volatile
-        private var INSTANCE: GameSitorDatabase? = null
-
-        fun getInstance(context: Context): GameSitorDatabase {
-            synchronized(this) {
-                var instance = INSTANCE
-
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
+    fun getDatabase(context: Context): GameSitorDatabase {
+        synchronized(GameSitorDatabase::class.java) {
+            if (!::INSTANCE.isInitialized) {
+                    INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         GameSitorDatabase::class.java,
-                        "sleep_history_database"
-                    )
-                        .fallbackToDestructiveMigration()
-                        .build()
-                    INSTANCE = instance
+                        "GameSitor"
+                    ).build()
                 }
-
-                return instance
-            }
         }
+        return INSTANCE
     }
 
-}
+

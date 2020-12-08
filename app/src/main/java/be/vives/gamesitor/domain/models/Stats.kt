@@ -1,4 +1,4 @@
-package be.vives.gamesitor.network.entities
+package be.vives.gamesitor.domain.models
 
 class Stats {
     var statsId: Int = 0

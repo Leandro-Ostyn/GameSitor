@@ -1,6 +1,6 @@
 package be.vives.gamesitor.gameEngine
 
-import be.vives.gamesitor.network.entities.Character
+import be.vives.gamesitor.domain.models.Character
 import timber.log.Timber
 import java.util.*
 
@@ -14,20 +14,20 @@ class BattleEngine {
 //        return true
 //    }
 
-//    fun levelAttackRecacalculation(character: Character): Int {
+//    fun levelAttackRecacalculation(character: DatabaseCharacter): Int {
 //        var attackRecalculation =
 //            (character.level * character.stats.attack) * (character.level * character.stats.strength)
 //
 //        return attackRecalculation
 //    }
 //
-//    fun levelDefenceRecalculation(character: Character): Int {
+//    fun levelDefenceRecalculation(character: DatabaseCharacter): Int {
 //        var defendingRecalculation =
 //            (character.level * character.stats.defence)
 //        return defendingRecalculation
 //    }
 
-    //    fun equipmentCalculator(character: Character) {
+    //    fun equipmentCalculator(character: DatabaseCharacter) {
 //        if (character.equipment != null) {
 //            character.stats.attack += character.equipment!!.weapon.effects.get(1).effect.value.toInt()
 //            //    character.stats.defence += character.equipment!!.shield.category.effectValue.toInt() + character.equipment!!.body.category.effectValue.toInt() + character.equipment!!.legs.category.effectValue.toInt()
@@ -79,7 +79,7 @@ class BattleEngine {
         if (character.equipment != null) {
             for (equipmentItem in character.equipment.Items!!)
                 for (itemEffect in equipmentItem.effects) {
-                    if (itemEffect.attribute == attribute) {
+                    if (itemEffect!!.attribute == attribute) {
                         bonus += itemEffect.value
                     }
                 }

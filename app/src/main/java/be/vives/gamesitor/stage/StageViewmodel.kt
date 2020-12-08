@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import be.vives.gamesitor.gameEngine.BattleEngine
-import be.vives.gamesitor.network.entities.*
+import be.vives.gamesitor.domain.models.*
 import timber.log.Timber
 
 //dataSource: RepositoryExample
@@ -80,7 +80,7 @@ class StageViewmodel() : ViewModel() {
 class Stagecharacters() {
     lateinit var characterA: Character
     var statsA: Stats = Stats()
-    var itemlist = listOf<Item>(Item(1, "", 0, 500, listOf(Effect(1, 0L, ""))))
+    var itemlist = listOf<Item>(Item(1, "", "", 500, listOf(Effect(1, 0L, ""))))
 
     lateinit var characterB: Character
     var statsB: Stats = Stats()

@@ -1,20 +1,30 @@
 package be.vives.gamesitor
 
-import androidx.lifecycle.LiveData
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import be.vives.gamesitor.network.entities.Stats
-import be.vives.gamesitor.network.entities.Type
-import be.vives.gamesitor.database.repositories.RepositoryExample
+import androidx.lifecycle.viewModelScope
+import be.vives.gamesitor.database.getDatabase
+
+import be.vives.gamesitor.database.repositories.Repository
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ViewModelExample : ViewModel() {
 
-     val repositoryExample = RepositoryExample()
+class ViewModelExample(application: Application) : AndroidViewModel(application) {
+private val database = getDatabase(application)
+     val repository = Repository(database)
     private val _typeId: MutableLiveData<Int> = MutableLiveData()
 
-
+init {
+    viewModelScope.launch {
+        try {
+            repository.refreshBackgrounds()
+        } catch (e: Exception){
+            Timber.i(e.message!!)
+        }
+    }
+}
     fun setTypeId(typeId: Int) {
         val update = typeId
         if (_typeId.value != update) {
@@ -28,7 +38,7 @@ fun checkCategories (){
 }
 
     private val _statsId: MutableLiveData<Int> = MutableLiveData()
-//    val stats: LiveData<Stats> = Transformations.switchMap(_statsId) {
+//    val stats: LiveData<DatabaseStats> = Transformations.switchMap(_statsId) {
 //        Timber.i("transformed")
 //        repositoryExample.getStats(it)
 //    }
@@ -43,6 +53,6 @@ fun checkCategories (){
     }
 
     fun cancelJobs() {
-        repositoryExample.cancelJobs()
+        repository.cancelJobs()
     }
 }

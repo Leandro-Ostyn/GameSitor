@@ -1,4 +1,4 @@
-package be.vives.gamesitor.network.entities
+package be.vives.gamesitor.domain.models
 
 data class Stage (
     var stageId : Int,
