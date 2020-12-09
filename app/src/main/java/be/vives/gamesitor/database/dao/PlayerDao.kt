@@ -9,7 +9,7 @@ import be.vives.gamesitor.database.DatabasePlayer
 
 @Dao
 interface PlayerDao {
-    @Query("select * from player")
+    @Query("select * from DatabasePlayer")
     fun getVideos(): LiveData<List<DatabasePlayer>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

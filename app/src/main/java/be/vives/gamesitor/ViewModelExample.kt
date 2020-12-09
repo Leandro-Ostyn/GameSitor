@@ -1,30 +1,33 @@
 package be.vives.gamesitor
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import be.vives.gamesitor.database.getDatabase
 
 import be.vives.gamesitor.database.repositories.Repository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 
 class ViewModelExample(application: Application) : AndroidViewModel(application) {
 private val database = getDatabase(application)
-     val repository = Repository(database)
+     private val repository = Repository(database)
     private val _typeId: MutableLiveData<Int> = MutableLiveData()
 
 init {
     viewModelScope.launch {
         try {
             repository.refreshBackgrounds()
+            Timber.i("Worked")
         } catch (e: Exception){
-            Timber.i(e.message!!)
+            Timber.i("I tried to make it work "+ e.message!! )
         }
     }
 }
+
+    val backgrounds = repository.backgrounds
     fun setTypeId(typeId: Int) {
         val update = typeId
         if (_typeId.value != update) {
@@ -55,4 +58,5 @@ fun checkCategories (){
     fun cancelJobs() {
         repository.cancelJobs()
     }
+
 }

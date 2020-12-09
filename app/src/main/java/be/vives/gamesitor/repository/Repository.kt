@@ -24,8 +24,11 @@ class Repository(private val database: GameSitorDatabase) {
     }
 suspend fun refreshBackgrounds(){
     withContext(Dispatchers.IO){
+        _status.postValue( SitorApiStatus.LOADING)
         val backgroundList = SitorApi.sitorApiService.getBackgrounds().await()
+        _status.postValue( SitorApiStatus.DONE)
         database.backgroundDao.insertAll(*backgroundList.asDataBaseModel())
+        Timber.i("Inserted all Backgrounds to db")
     }
 }
 

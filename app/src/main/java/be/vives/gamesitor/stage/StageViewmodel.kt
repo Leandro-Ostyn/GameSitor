@@ -1,14 +1,15 @@
 package be.vives.gamesitor.stage
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import be.vives.gamesitor.database.getDatabase
+import be.vives.gamesitor.database.repositories.Repository
 import be.vives.gamesitor.gameEngine.BattleEngine
 import be.vives.gamesitor.domain.models.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-//dataSource: RepositoryExample
-class StageViewmodel() : ViewModel() {
+class StageViewmodel(application: Application) : AndroidViewModel(application) {
     val stageCharacter: Stagecharacters = Stagecharacters()
     val battleEngine: BattleEngine = BattleEngine()
 
@@ -29,6 +30,14 @@ class StageViewmodel() : ViewModel() {
     val hpCharacterEnemy: LiveData<Int> get() = _hpCharacterEnemy
 
     init {
+        viewModelScope.launch {
+            try {
+                repository.refreshBackgrounds()
+                Timber.i("Worked")
+            } catch (e: Exception){
+                Timber.i( e.message!! )
+            }
+        }
         _attacked.value = false
         _gameLost.value = false
         _gameWon.value = false
@@ -39,6 +48,13 @@ class StageViewmodel() : ViewModel() {
         hpheroStart = _HpCharachterHero.value!!
         hpEnemyStart = _hpCharacterEnemy.value!!
     }
+
+
+    private val database = getDatabase(application)
+    private val repository = Repository(database)
+    private val _typeId: MutableLiveData<Int> = MutableLiveData()
+
+    val backgrounds = repository.backgrounds
 
     fun calculateDamageToEnemy() {
         _hpCharacterEnemy.value = _hpCharacterEnemy.value?.minus(
@@ -73,6 +89,17 @@ class StageViewmodel() : ViewModel() {
 
     private fun gameLost() {
         _gameLost.value = true
+    }
+
+    class StageViewmodelFactory (
+         val app: Application
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(StageViewmodel::class.java)) {
+                    return StageViewmodel(app) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 }
 
@@ -112,4 +139,7 @@ class Stagecharacters() {
             )
         )
     }
+
+
+
 }

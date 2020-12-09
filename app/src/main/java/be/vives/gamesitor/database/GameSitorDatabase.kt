@@ -7,16 +7,17 @@ import androidx.room.RoomDatabase
 import be.vives.gamesitor.database.dao.BackgroundDao
 import be.vives.gamesitor.database.dao.PlayerDao
 import be.vives.gamesitor.database.dao.SettingsDao
+import be.vives.gamesitor.database.entities.DatabaseBackground
 
 @Database(
-    entities = arrayOf(DatabasePlayer::class, DatabaseSettings::class),
+    entities = arrayOf(DatabaseSettings::class,DatabaseBackground::class),
     version = 1,
     exportSchema = false
 )
 abstract class GameSitorDatabase : RoomDatabase() {
 
     abstract val backgroundDao: BackgroundDao
-    abstract val playerDao: PlayerDao
+ //   abstract val playerDao: PlayerDao
     abstract val settingsDao: SettingsDao
 }
     private lateinit var INSTANCE: GameSitorDatabase

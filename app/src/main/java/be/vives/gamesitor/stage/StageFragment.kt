@@ -1,5 +1,6 @@
 package be.vives.gamesitor.stage
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,12 +13,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.StageFragmentBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
 import timber.log.Timber
 import java.util.*
 
 class StageFragment : Fragment() {
 
-    private lateinit var stageViewmodel: StageViewmodel
+    private val stageViewModel: StageViewmodel by lazy {
+        val activity = requireNotNull(this.activity){}
+        ViewModelProvider(this,StageViewmodel.StageViewmodelFactory(activity.application)).get(StageViewmodel::class.java)
+    }
     private lateinit var binding: StageFragmentBinding
 
     override fun onCreateView(
@@ -26,19 +32,17 @@ class StageFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.stage_fragment, container, false)
 
-        val application = requireNotNull(this.activity).application
 
         binding.lifecycleOwner = viewLifecycleOwner
-        //  val dataSource = RepositoryExample()
 
+        stageViewModel.backgrounds.observe(viewLifecycleOwner, Observer {
 
-        //    val viewModelFactory = StageViewmodelFactory(dataSource)
+           var test = Glide.with(binding.frameLayout.context).load(it[10].image).into(binding.StageBackground)
 
-        stageViewmodel =
-            ViewModelProvider(this).get(StageViewmodel::class.java)
+            })
 
-        binding.viewmodel = stageViewmodel
-        stageViewmodel.apply {
+        binding.viewmodel = stageViewModel
+        stageViewModel.apply {
             binding.btnAttack.setOnClickListener() {
                 calculateDamageToEnemy()
 
@@ -60,5 +64,4 @@ class StageFragment : Fragment() {
             }
                 return binding.root
         }
-
     }

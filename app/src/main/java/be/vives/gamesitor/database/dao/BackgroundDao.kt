@@ -11,7 +11,7 @@ import kotlinx.coroutines.selects.select
 @Dao
 interface BackgroundDao {
 
-    @Query("select * from DatabaseBackground" )
+    @Query("select * from databasebackground" )
     fun getBackgrounds(): LiveData<List<DatabaseBackground>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

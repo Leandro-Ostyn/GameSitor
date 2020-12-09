@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class DatabaseCategory (
+    @PrimaryKey
     val categoryId: Int,
     val name: String?,
     val types: List<DatabaseType?>)
