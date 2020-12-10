@@ -78,12 +78,13 @@ class BattleEngine {
         var bonus = 0L
         if (character.equipment != null) {
             for (equipmentItem in character.equipment.Items!!)
-                for (itemEffect in equipmentItem.effects) {
-                    if (itemEffect!!.attribute == attribute) {
-                        bonus += itemEffect.value
-                    }
+//                for (itemEffect in equipmentItem.effects) {
+//                    if (itemEffect!!.attribute == attribute) {
+//                        bonus += itemEffect.value
+//                    }
+    Timber.i("")
                 }
-        }
+
         return bonus
     }
 

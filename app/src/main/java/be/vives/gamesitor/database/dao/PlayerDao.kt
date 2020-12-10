@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import be.vives.gamesitor.database.DatabasePlayer
+import be.vives.gamesitor.database.entities.DatabasePlayer
 
 @Dao
 interface PlayerDao {

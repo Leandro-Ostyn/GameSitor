@@ -6,14 +6,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import be.vives.gamesitor.database.entities.DatabaseBackground
-import kotlinx.coroutines.selects.select
+import be.vives.gamesitor.database.entities.DatabaseStats
 
 @Dao
-interface BackgroundDao {
+interface StatsDao {
 
-    @Query("select * from databasebackground" )
-    fun getBackgrounds(): LiveData<List<DatabaseBackground>>
+    @Query("select * from databasestats" )
+    fun getStatsSet(): LiveData<List<DatabaseStats>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg backgrounds: DatabaseBackground)
+    fun insertAll(vararg stats: DatabaseStats)
 }

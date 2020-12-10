@@ -7,5 +7,5 @@ data class Item (
     val name : String?,
     val image : String?,
     val cost : Long,
-    val effects : List<Effect?>
+ //   val effects : List<Effect?>
 )

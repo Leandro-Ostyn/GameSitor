@@ -12,6 +12,8 @@ import timber.log.Timber
 class StageViewmodel(application: Application) : AndroidViewModel(application) {
     val stageCharacter: Stagecharacters = Stagecharacters()
     val battleEngine: BattleEngine = BattleEngine()
+    private val database = getDatabase(application)
+    private val repository = Repository(database)
 
     private val _attacked = MutableLiveData<Boolean>()
     val attacked: LiveData<Boolean> get() = _attacked
@@ -34,8 +36,16 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
             try {
                 repository.refreshBackgrounds()
                 Timber.i("Worked")
-            } catch (e: Exception){
-                Timber.i( e.message!! )
+            } catch (e: Exception) {
+                Timber.i(e.message!!)
+            }
+        }
+        viewModelScope.launch {
+            try {
+                repository.refreshItems()
+                Timber.i("Worked with items")
+            } catch (e: Exception) {
+                Timber.i(e.message!!)
             }
         }
         _attacked.value = false
@@ -50,9 +60,9 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    private val database = getDatabase(application)
-    private val repository = Repository(database)
+
     private val _typeId: MutableLiveData<Int> = MutableLiveData()
+    val items = repository.items
 
     val backgrounds = repository.backgrounds
 
@@ -91,12 +101,12 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
         _gameLost.value = true
     }
 
-    class StageViewmodelFactory (
-         val app: Application
+    class StageViewmodelFactory(
+        val app: Application
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(StageViewmodel::class.java)) {
-                    return StageViewmodel(app) as T
+                return StageViewmodel(app) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
@@ -106,18 +116,22 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
 
 class Stagecharacters() {
     lateinit var characterA: Character
-    var statsA: Stats = Stats()
-    var itemlist = listOf<Item>(Item(1, "", "", 500, listOf(Effect(1, 0L, ""))))
+
+    var itemlist = listOf<Item>(
+        Item(
+            1, "", "", 500,
+        )
+    )
 
     lateinit var characterB: Character
-    var statsB: Stats = Stats()
+    lateinit var statsB: Stats
     fun setcharacterA() {
-        statsA.lifepoints = 10
-        statsA.attack = 90
-        statsA.defence = 1
-        statsA.strength = 99
-
-
+        var statsA = Stats(
+            lifepoints = 10,
+            attack = 90,
+            defence = 1,
+            strength = 99, statsId = 1
+        )
         characterA = Character(
             characterId = 1, level = 1, name = "enemy", stats = statsA,
             equipment = Equipment(
@@ -127,11 +141,9 @@ class Stagecharacters() {
     }
 
     fun setcharacterB() {
-        statsB.strength = 99
-        statsB.attack = 1
-        statsB.defence = 1
-        statsB.lifepoints = 10
-
+        statsB = Stats(
+            strength = 99, attack = 1, defence = 1, lifepoints = 10, statsId = 2
+        )
         characterB = Character(
             characterId = 2, level = 1, name = "HERO", stats = statsB,
             equipment = Equipment(
@@ -139,7 +151,6 @@ class Stagecharacters() {
             )
         )
     }
-
 
 
 }

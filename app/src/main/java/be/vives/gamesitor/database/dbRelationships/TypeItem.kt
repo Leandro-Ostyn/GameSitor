@@ -1,4 +1,4 @@
-package be.vives.gamesitor.network.dbmappingentities
+package be.vives.gamesitor.database.dbRelationships
 
 import be.vives.gamesitor.domain.models.Item
 

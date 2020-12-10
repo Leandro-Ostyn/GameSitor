@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import be.vives.gamesitor.databinding.ActivityMainBinding
+import be.vives.gamesitor.stage.StageViewmodel
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {

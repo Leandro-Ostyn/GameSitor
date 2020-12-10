@@ -55,8 +55,6 @@ fun checkCategories (){
         }
     }
 
-    fun cancelJobs() {
-        repository.cancelJobs()
-    }
+
 
 }

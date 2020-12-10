@@ -5,14 +5,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import be.vives.gamesitor.database.entities.DatabaseSettings
+import be.vives.gamesitor.database.entities.DatabaseCategory
 
 @Dao
-interface SettingsDao {
+interface CategoryDao {
 
-    @Query("select * from settings")
-    fun getVideos(): LiveData<List<DatabaseSettings>>
+    @Query("select * from databasecategory")
+    fun getCategories(): LiveData<List<DatabaseCategory>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg settings: DatabaseSettings)
+    fun insertAll(vararg categories: DatabaseCategory)
 }

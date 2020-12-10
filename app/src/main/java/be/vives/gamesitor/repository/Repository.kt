@@ -1,116 +1,85 @@
 package be.vives.gamesitor.database.repositories
 
-import android.net.Network
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import be.vives.gamesitor.MappingUtils.asDataBaseModel
+import be.vives.gamesitor.MappingUtils.asDomainModel
 import be.vives.gamesitor.database.GameSitorDatabase
-import be.vives.gamesitor.database.entities.asDataBaseModel
-import be.vives.gamesitor.database.entities.asDomainModel
-import be.vives.gamesitor.domain.models.Category
-import be.vives.gamesitor.network.SitorApi
 import be.vives.gamesitor.domain.models.Background
+import be.vives.gamesitor.domain.models.Category
+import be.vives.gamesitor.domain.models.Item
+import be.vives.gamesitor.network.SitorApi
 import kotlinx.coroutines.*
 import timber.log.Timber
 
 enum class SitorApiStatus { LOADING, ERROR, DONE }
 
 class Repository(private val database: GameSitorDatabase) {
-    private var repositoryJob = Job()
-    private val coroutineScope = CoroutineScope(repositoryJob + Dispatchers.Main)
-
-    val backgrounds: LiveData<List<Background>> = Transformations.map(database.backgroundDao.getBackgrounds()){
-        it.asDomainModel()
-    }
-suspend fun refreshBackgrounds(){
-    withContext(Dispatchers.IO){
-        _status.postValue( SitorApiStatus.LOADING)
-        val backgroundList = SitorApi.sitorApiService.getBackgrounds().await()
-        _status.postValue( SitorApiStatus.DONE)
-        database.backgroundDao.insertAll(*backgroundList.asDataBaseModel())
-        Timber.i("Inserted all Backgrounds to db")
-    }
-}
-
-    private val _categories = MutableLiveData<List<Category>>()
-    val gategories: LiveData<List<Category>>
-        get() = _categories
-
+    //Checking Status of Api Connection
     private val _status = MutableLiveData<SitorApiStatus>()
     val status: LiveData<SitorApiStatus>
         get() = _status
 
-    fun getCategories() {
-        coroutineScope.launch {
-            val getCategoriesDeferred = SitorApi.sitorApiService.getCategories()
-            try {
-                _status.value = SitorApiStatus.LOADING
-                Timber.i(status.value.toString())
-                val listResult = getCategoriesDeferred.await()
-                _status.value = SitorApiStatus.DONE
-                Timber.i(listResult.size.toString())
-                Timber.i(status.value.toString())
-
-                if (listResult.isNotEmpty()) {
-                    _categories.value = listResult
-                }
-
-            } catch (t: Throwable) {
-                _status.value = SitorApiStatus.ERROR
-                _categories.value = ArrayList()
-            }
+    // Fetching from Database , mapping to DomainModel
+    val backgrounds: LiveData<List<Background>> =
+        Transformations.map(database.backgroundDao.getBackgrounds()) {
+            it.asDomainModel()
         }
-
-    }
-
-    private val _backgrounds = MutableLiveData<List<Background>>()
-    val backgroundz: LiveData<List<Background>>
-        get() = _backgrounds
-
-    fun getBackgrounds() {
-        coroutineScope.launch {
-            val getBackgroundsDeferred = SitorApi.sitorApiService.getBackgrounds()
-            try {
-                _status.value = SitorApiStatus.LOADING
-                Timber.i(status.value.toString())
-                val listResult = getBackgroundsDeferred.await()
-                _status.value = SitorApiStatus.DONE
-                Timber.i(listResult.size.toString())
-                Timber.i(status.value.toString())
-
-                if (listResult.isNotEmpty()) {
-                    _backgrounds.value = listResult
-                }
-
-            } catch (t: Throwable) {
-                _status.value = SitorApiStatus.ERROR
-                _categories.value = ArrayList()
-            }
-        }
-
-    }
-
-
-//    fun getStats(statsId: Int) {
-//
-//        coroutineScope.launch {
-//            val getStatsDeffered = SitorApi.sitorApiService.getStats(statsId)
-//            try {
-//                _status.value = SitorApiStatus.LOADING
-//                Timber.i(status.value.toString())
-//                val listResult = getStatsDeffered.await()
-//                _status.value = SitorApiStatus.DONE
-//                Timber.i(listResult.lifepoints.toString())
-//                Timber.i(status.value.toString())
-//
-//            } catch (t: Throwable) {
-//                _status.value = SitorApiStatus.ERROR
-//                _categories.value = ArrayList()
-//            }
+//    val categories: LiveData<List<Category>> =
+//        Transformations.map(database.categoryDao.getCategories()) {
+//            it.asDomainModel()
 //        }
-//    }
 
-    fun cancelJobs() {
-        repositoryJob.cancel()
+    val items: LiveData<List<Item>> =
+        Transformations.map(database.itemDao.getItems()) {
+            it.asDomainModel()
+        }
+
+
+
+    //Fetching  From Api, mapping to DatabaseModel
+
+    // Background Fetching from Api, Mapping to DatabaseModel
+    suspend fun refreshBackgrounds() {
+        withContext(Dispatchers.IO) {
+            val backgroundList = SitorApi.sitorApiService.getBackgrounds().await()
+            database.backgroundDao.insertAll(*backgroundList.asDataBaseModel().toTypedArray())
+            Timber.i("Inserted all Backgrounds to db")
+        }
     }
+
+    suspend fun refreshCategories() {
+        withContext(Dispatchers.IO) {
+            _status.postValue(SitorApiStatus.LOADING)
+            val categorylist = SitorApi.sitorApiService.getCategories().await()
+            _status.postValue(SitorApiStatus.DONE)
+            //   database.categoryDao.insertAll(*categorylist.asDataBaseModel())
+            Timber.i("Inserted all categories to db")
+        }
+
+    }
+
+    suspend fun refreshStats() {
+
+        withContext(Dispatchers.IO) {
+            _status.postValue(SitorApiStatus.LOADING)
+            val statsList = SitorApi.sitorApiService.getStats().await()
+            _status.postValue(SitorApiStatus.DONE)
+            database.statsDao.insertAll(*statsList.asDataBaseModel().toTypedArray())
+            Timber.i("Inserted all Stats to db")
+        }
+    }
+
+    suspend fun refreshItems() {
+
+        withContext(Dispatchers.IO) {
+            _status.postValue(SitorApiStatus.LOADING)
+            val itemList = SitorApi.sitorApiService.getItems().await()
+            _status.postValue(SitorApiStatus.DONE)
+            database.itemDao.insertAll(*itemList.asDataBaseModel().toTypedArray())
+            Timber.i("Inserted all Stats to db")
+        }
+    }
+
 }

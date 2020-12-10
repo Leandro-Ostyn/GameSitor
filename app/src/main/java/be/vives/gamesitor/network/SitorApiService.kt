@@ -1,8 +1,6 @@
 package be.vives.gamesitor.network
 
-import be.vives.gamesitor.domain.models.Background
-import be.vives.gamesitor.domain.models.Category
-import be.vives.gamesitor.domain.models.Character
+import be.vives.gamesitor.domain.models.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -34,18 +32,21 @@ interface SitorApiService {
     @GET("CategoryApi")
      fun getCategories(): Deferred<List<Category>>
 
-//    @GET("StatsApi/{id}")
-//     fun getStats(
-//        @Path("id") id: Int
-//    ): Deferred<DatabaseStats>
+  @GET("StatsApi")
+  fun getStats(
+   ): Deferred<List<Stats>>
 
     @GET("CharacterApi/{id}")
    fun getCharacter(
-       @Path("id") id: Int
-   ): Deferred<Character>
+        @Path("id") id: Int
+    ): Deferred<Character>
 
     @GET("BackgroundApi")
     fun getBackgrounds(
     ): Deferred<List<Background>>
+
+    @GET("ItemApi")
+    fun getItems(
+    ): Deferred<List<Item>>
 }
 

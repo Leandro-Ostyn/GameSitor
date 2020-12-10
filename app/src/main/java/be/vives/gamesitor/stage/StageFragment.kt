@@ -21,8 +21,10 @@ import java.util.*
 class StageFragment : Fragment() {
 
     private val stageViewModel: StageViewmodel by lazy {
-        val activity = requireNotNull(this.activity){}
-        ViewModelProvider(this,StageViewmodel.StageViewmodelFactory(activity.application)).get(StageViewmodel::class.java)
+        val activity = requireNotNull(this.activity) {}
+        ViewModelProvider(this, StageViewmodel.StageViewmodelFactory(activity.application)).get(
+            StageViewmodel::class.java
+        )
     }
     private lateinit var binding: StageFragmentBinding
 
@@ -35,12 +37,11 @@ class StageFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        stageViewModel.backgrounds.observe(viewLifecycleOwner, Observer {
-
-           var test = Glide.with(binding.frameLayout.context).load(it[10].image).into(binding.StageBackground)
-
-            })
-
+        stageViewModel.items.observe(viewLifecycleOwner, Observer {
+            for (item in it) {
+                Timber.i(item.name + " this is the name")
+            }
+        })
         binding.viewmodel = stageViewModel
         stageViewModel.apply {
             binding.btnAttack.setOnClickListener() {
@@ -56,12 +57,12 @@ class StageFragment : Fragment() {
 
                 }
             })
-                gameWon.observe(viewLifecycleOwner, Observer {
-                    if (it) {
-                        Timber.i("i won ")
-                    }
-                })
-            }
-                return binding.root
+            gameWon.observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    Timber.i("i won ")
+                }
+            })
         }
+        return binding.root
     }
+}
