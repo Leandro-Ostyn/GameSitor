@@ -4,12 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class DatabaseStats (
+data class DatabaseStats(
     @PrimaryKey
     var statsId: Int,
     var lifepoints: Int,
-    var attack: Int ,
-    var strength: Int ,
-    var defence: Int ,
-
+    var attack: Int,
+    var strength: Int,
+    var defence: Int,
 )

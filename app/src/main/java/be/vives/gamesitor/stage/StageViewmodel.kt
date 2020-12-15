@@ -2,6 +2,8 @@ package be.vives.gamesitor.stage
 
 import android.app.Application
 import androidx.lifecycle.*
+import be.vives.gamesitor.database.entities.DatabaseEffect
+import be.vives.gamesitor.database.entities.DatabaseItem
 import be.vives.gamesitor.database.getDatabase
 import be.vives.gamesitor.database.repositories.Repository
 import be.vives.gamesitor.gameEngine.BattleEngine
@@ -34,20 +36,21 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
     init {
         viewModelScope.launch {
             try {
+
                 repository.refreshBackgrounds()
                 Timber.i("Worked")
             } catch (e: Exception) {
                 Timber.i(e.message!!)
             }
         }
-        viewModelScope.launch {
-            try {
-                repository.refreshItems()
-                Timber.i("Worked with items")
-            } catch (e: Exception) {
-                Timber.i(e.message!!)
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                repository.refreshItems()
+//                Timber.i("Worked with items")
+//            } catch (e: Exception) {
+//                Timber.i(e.message!!)
+//            }
+//        }
         _attacked.value = false
         _gameLost.value = false
         _gameWon.value = false
@@ -117,9 +120,10 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
 class Stagecharacters() {
     lateinit var characterA: Character
 
-    var itemlist = listOf<Item>(
-        Item(
-            1, "", "", 500,
+    var itemlist = listOf<ItemWithEffect>(
+        ItemWithEffect(
+            item = DatabaseItem(1,"","",0L),
+            effects = listOf(DatabaseEffect(0,0L,""))
         )
     )
 
@@ -135,7 +139,8 @@ class Stagecharacters() {
         characterA = Character(
             characterId = 1, level = 1, name = "enemy", stats = statsA,
             equipment = Equipment(
-                equipmentId = 1, name = "", characterId = 1, Items = itemlist
+                equipmentId = 1, name = "", Items = itemlist
+
             )
         )
     }
@@ -147,7 +152,7 @@ class Stagecharacters() {
         characterB = Character(
             characterId = 2, level = 1, name = "HERO", stats = statsB,
             equipment = Equipment(
-                equipmentId = 1, name = "", characterId = 1, Items = itemlist
+                equipmentId = 1, name = "", Items = itemlist
             )
         )
     }

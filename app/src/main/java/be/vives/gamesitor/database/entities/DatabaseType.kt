@@ -1,10 +1,11 @@
 package be.vives.gamesitor.database.entities
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity
 data class DatabaseType (
+    @PrimaryKey
     val typeId: Int,
     val type: String?,
-    val items: List<DatabaseItem?>
 )

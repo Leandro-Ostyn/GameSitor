@@ -1,12 +1,14 @@
 package be.vives.gamesitor.database.entities
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity
-data class DatabaseStage (
-    var stageId : Int,
-    var name : String,
-    var background : DatabaseBackground,
-    var enemy : DatabaseCharacter,
-    var reward: DatabaseReward
+data class DatabaseStage(
+    @PrimaryKey
+    var stageId: Int,
+    var name: String,
+    var backgroundId: Int,
+    var characterId: Int,
+    var rewardId: Int
 )

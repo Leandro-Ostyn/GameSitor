@@ -1,10 +1,12 @@
 package be.vives.gamesitor.domain.models
 
+import androidx.room.Embedded
+
 data class Character (
     var characterId : Int,
     var name: String,
     var level: Int,
-    var equipment : Equipment,
-    var stats : Stats
+    @Embedded var equipment : Equipment,
+  @Embedded  var stats : Stats
 
 )

@@ -1,9 +1,14 @@
 package be.vives.gamesitor.domain.models
 
+import androidx.room.Embedded
+import be.vives.gamesitor.domain.models.Background
+import be.vives.gamesitor.domain.models.Character
+import be.vives.gamesitor.domain.models.Reward
+
 data class Stage (
-    var stageId : Int,
-    var name : String,
-    var background : Background,
-    var enemy : Character,
-    var reward: Reward
+    val stageId : Int,
+    val name : String,
+    @Embedded  val background : Background,
+    @Embedded  val character : Character,
+    @Embedded   val reward: Reward
 )

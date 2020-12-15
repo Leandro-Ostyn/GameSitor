@@ -9,7 +9,6 @@ import be.vives.gamesitor.domain.models.Effect
 data class DatabaseEffect(
     @PrimaryKey
     val effectId: Int,
-    val itemId: Int,
     val value: Long,
     val attribute: String?
 )

@@ -1,9 +1,11 @@
 package be.vives.gamesitor.database.entities
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity
-class DatabaseShop {
-    var shopItems : ArrayList<DatabaseItem> = ArrayList()
-
-}
+data class DatabaseShop(
+    @PrimaryKey
+    val shopId: Int,
+    val name: String
+)

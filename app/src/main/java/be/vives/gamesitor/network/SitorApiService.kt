@@ -1,5 +1,7 @@
 package be.vives.gamesitor.network
 
+import be.vives.gamesitor.database.dbRelationships.CrossRefs.*
+import be.vives.gamesitor.database.entities.*
 import be.vives.gamesitor.domain.models.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -16,37 +18,74 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-private val retrofit : Retrofit.Builder by lazy {
+private val retrofit: Retrofit.Builder by lazy {
     Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi))
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-    .baseUrl(BASE_URL) }
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .baseUrl(BASE_URL)
+}
 
-object SitorApi{
+object SitorApi {
     val sitorApiService: SitorApiService by lazy {
         retrofit.build().create(SitorApiService::class.java)
-    }}
+    }
+}
 
 interface SitorApiService {
-//Hier alle getters aanmaken en later nog setters toevoegen
-
-    @GET("CategoryApi")
-     fun getCategories(): Deferred<List<Category>>
-
-  @GET("StatsApi")
-  fun getStats(
-   ): Deferred<List<Stats>>
-
-    @GET("CharacterApi/{id}")
-   fun getCharacter(
-        @Path("id") id: Int
-    ): Deferred<Character>
 
     @GET("BackgroundApi")
-    fun getBackgrounds(
-    ): Deferred<List<Background>>
+    fun getBackgrounds(): Deferred<List<DatabaseBackground>>
+
+    @GET("CategoryApi")
+    fun getCategories(): Deferred<List<DatabaseCategory>>
+
+    @GET("CategoryTypeApi")
+    fun getCategoryTypes(): Deferred<List<CategoryTypeCrossRef>>
+
+    @GET("EffectApi")
+    fun getEffects(): Deferred<List<DatabaseEffect>>
+
+    @GET("EffectListApi")
+    fun getEffectLists(): Deferred<List<ItemEffectCrossRef>>
+
+    @GET("CharacterApi")
+    fun getCharacters(): Deferred<List<DatabaseCharacter>>
+
+    @GET("EquipmentApi")
+    fun getEquipments(): Deferred<List<DatabaseEquipment>>
+
+    @GET("EquipmentItemsApi")
+    fun getEquipmentItems(): Deferred<List<EquipmentItemsCrossRef>>
+
+    @GET("InventoryApi")
+    fun getInventory(): Deferred<List<DatabaseInventory>>
+
+    @GET("InventoryItemsApi")
+    fun getInventoryItemsSet(): Deferred<List<InventoryItemsCrossRef>>
 
     @GET("ItemApi")
-    fun getItems(
-    ): Deferred<List<Item>>
+    fun getItems(): Deferred<List<DatabaseItem>>
+
+    @GET("RewardApi")
+    fun getRewards(): Deferred<List<DatabaseReward>>
+
+    @GET("ShopApi")
+    fun getShops(): Deferred<List<DatabaseShop>>
+
+    @GET("StageApi")
+    fun getStages(): Deferred<List<DatabaseStage>>
+
+    @GET("StatsApi")
+    fun getStats(): Deferred<List<DatabaseStats>>
+
+    @GET("StockApi")
+    fun getStocks(): Deferred<List<ShopItemCrossRef>>
+
+    @GET("TypeApi")
+    fun getTypes(): Deferred<List<DatabaseType>>
+
+    @GET("TypeItemApi")
+    fun getTypeItems(): Deferred<List<TypeItemCrossRef>>
+
 }
+
 

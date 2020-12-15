@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.StageFragmentBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import timber.log.Timber
 import java.util.*
@@ -39,9 +40,16 @@ class StageFragment : Fragment() {
 
         stageViewModel.items.observe(viewLifecycleOwner, Observer {
             for (item in it) {
-                Timber.i(item.name + " this is the name")
+                Timber.i("%s%s", item.item.name + " this is the name and lets check of the itmes came with it or not ", item.item.itemId)
             }
         })
+
+//            Glide.with(requireContext())
+//                .load(stageViewModel.backgrounds.value!![9])
+//                    .into(binding.StageBackground)
+
+
+
         binding.viewmodel = stageViewModel
         stageViewModel.apply {
             binding.btnAttack.setOnClickListener() {

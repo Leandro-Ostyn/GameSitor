@@ -1,11 +1,12 @@
 package be.vives.gamesitor.database.entities
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 
 @Entity
-data class DatabaseInventory (
-
-    val inventoryId :Int,
-    val Items :ArrayList<DatabaseItem>
+data class DatabaseInventory(
+    @PrimaryKey
+    val inventoryId: Int,
+    val name: String
 )
