@@ -4,11 +4,16 @@ plugins {
     id 'kotlin-kapt'
     id "androidx.navigation.safeargs.kotlin"
 }
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    androidExtensions {
+        experimental = true
+    }
     defaultConfig {
         applicationId "be.vives.gamesitor"
         minSdkVersion 19

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import be.vives.gamesitor.database.dao.*
-import be.vives.gamesitor.database.dbRelationships.CrossRefs.*
+import be.vives.gamesitor.database.dbRelationships.crossRefs.*
 import be.vives.gamesitor.database.entities.*
 
 

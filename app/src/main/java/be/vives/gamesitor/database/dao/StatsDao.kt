@@ -12,7 +12,10 @@ import be.vives.gamesitor.database.entities.DatabaseStats
 interface StatsDao {
 
     @Query("select * from databasestats" )
-    fun getStatsSet(): LiveData<List<DatabaseStats>>
+    fun getAllStats(): LiveData<List<DatabaseStats>>
+
+    @Query("select * from databasestats where statsId= :statsId " )
+    fun getStats(statsId : Int): LiveData<DatabaseStats>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg stats: DatabaseStats)

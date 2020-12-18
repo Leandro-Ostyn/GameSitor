@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ShopFragment">
 
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="be.vives.gamesitor.shop.ShopViewmodel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +20,7 @@
             android:id="@+id/btnMainMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Main menu"
+            android:text="@string/main_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.499"
@@ -23,14 +30,61 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RVShop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:padding="6dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.261"
+            app:listData="@{viewmodel.items}"
+            app:spanCount="6"
+            tools:itemCount="20"
+            tools:listitem="@layout/grid_view_item">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/CostumBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/barbackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/lblWallet"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="#881E03"
+            android:text="Current Coins :"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.025" />
+
+        <TextView
+            android:id="@+id/txtWallet"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="#881E03"
+            android:text="0"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.166"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.025" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

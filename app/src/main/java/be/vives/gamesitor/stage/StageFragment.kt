@@ -38,11 +38,6 @@ class StageFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        stageViewModel.items.observe(viewLifecycleOwner, Observer {
-            for (item in it) {
-                Timber.i("%s%s", item.item.name + " this is the name and lets check of the itmes came with it or not ", item.item.itemId)
-            }
-        })
 
 //            Glide.with(requireContext())
 //                .load(stageViewModel.backgrounds.value!![9])
@@ -53,14 +48,14 @@ class StageFragment : Fragment() {
         binding.viewmodel = stageViewModel
         stageViewModel.apply {
             binding.btnAttack.setOnClickListener() {
-                calculateDamageToEnemy()
+            //    calculateDamageToEnemy()
 
             }
             attacked.observe(viewLifecycleOwner, Observer {
                 if (it) {
 
                     Handler(Looper.getMainLooper()).postDelayed({
-                        calculateDamageToHero()
+              //          calculateDamageToHero()
                     }, 1000)
 
                 }

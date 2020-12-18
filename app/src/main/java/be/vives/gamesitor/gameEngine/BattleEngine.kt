@@ -1,6 +1,6 @@
 package be.vives.gamesitor.gameEngine
 
-import be.vives.gamesitor.domain.models.Character
+import be.vives.gamesitor.models.Character
 import timber.log.Timber
 import java.util.*
 
@@ -77,7 +77,7 @@ class BattleEngine {
     fun calculateBonus(attribute: String, character: Character): Long {
         var bonus = 0L
         if (character.equipment != null) {
-            for (equipmentItem in character.equipment.Items!!)
+            for (equipmentItem in character.equipment.items!!)
 //                for (itemEffect in equipmentItem.effects) {
 //                    if (itemEffect!!.attribute == attribute) {
 //                        bonus += itemEffect.value
@@ -88,7 +88,7 @@ class BattleEngine {
         return bonus
     }
 
-    fun calculateHit(character: Character,defending: Character): Int {
+    fun calculateHit(character: Character, defending: Character): Int {
         Timber.i("attack and def : "+character.stats.attack.toDouble()+"  "+defending.stats.defence.toDouble())
       var procent=  character.stats.attack.toDouble()/defending.stats.defence.toDouble()
         Timber.i("original proc: $procent")

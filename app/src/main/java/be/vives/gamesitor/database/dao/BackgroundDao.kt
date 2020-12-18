@@ -1,19 +1,22 @@
 package be.vives.gamesitor.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import be.vives.gamesitor.database.entities.DatabaseBackground
 import kotlinx.coroutines.selects.select
 
 @Dao
 interface BackgroundDao {
 
-    @Query("select * from databasebackground" )
+    @Query("select * from databasebackground")
     fun getBackgrounds(): LiveData<List<DatabaseBackground>>
+
+    @Query("select * from databasebackground where backgroundId = :backgroundId")
+    fun getBackgroundById(backgroundId: Int): LiveData<List<DatabaseBackground>>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg backgrounds: DatabaseBackground)
+
+
 }

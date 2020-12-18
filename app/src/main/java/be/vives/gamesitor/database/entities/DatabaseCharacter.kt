@@ -2,9 +2,9 @@ package be.vives.gamesitor.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import be.vives.gamesitor.domain.models.Character
-import be.vives.gamesitor.domain.models.Equipment
-import be.vives.gamesitor.domain.models.Stats
+import be.vives.gamesitor.models.Character
+import be.vives.gamesitor.models.Equipment
+import be.vives.gamesitor.models.Stats
 
 @Entity
 data class DatabaseCharacter(

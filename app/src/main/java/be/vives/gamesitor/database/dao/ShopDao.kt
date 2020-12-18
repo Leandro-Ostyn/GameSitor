@@ -5,15 +5,22 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import be.vives.gamesitor.database.dbRelationships.CrossRefs.InventoryItemsCrossRef
-import be.vives.gamesitor.database.dbRelationships.CrossRefs.ShopItemCrossRef
-import be.vives.gamesitor.database.entities.DatabaseReward
+import be.vives.gamesitor.database.dbRelationships.crossRefs.ShopItemCrossRef
 import be.vives.gamesitor.database.entities.DatabaseShop
 
 @Dao
 interface ShopDao {
     @Query("select * from databaseshop")
     fun getShops(): LiveData<List<DatabaseShop>>
+
+    @Query("select * from databaseshop where shopId= :shopId")
+    fun getShop(shopId: Int): LiveData<List<DatabaseShop>>
+
+//    @Query("select * from databaseshop where shopId= :shopId")
+//    fun getShopWithItems(shopId: Int): LiveData<Shop>
+//
+//    @Query("select * from databaseshop")
+//    fun getShopswithItems(): LiveData<List<Shop>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg shops: DatabaseShop)

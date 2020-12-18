@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainGameFragment"
-        android:name="be.vives.gamesitor.MainGameFragment"
+        android:name="be.vives.gamesitor.mainGame.MainGameFragment"
         android:label="main_game_fragment"
         tools:layout="@layout/main_game_fragment" >
         <action
@@ -22,14 +22,23 @@
         <action
             android:id="@+id/action_mainGameFragment_to_stageFragment"
             app:destination="@id/stageFragment" />
+        <action
+            android:id="@+id/action_mainGameFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
-        android:name="be.vives.gamesitor.ShopFragment"
+        android:name="be.vives.gamesitor.shop.ShopFragment"
         android:label="shop_fragment"
         tools:layout="@layout/shop_fragment" >
         <action
             android:id="@+id/action_shopFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment" />
+        <action
+            android:id="@+id/action_shopFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_shopFragment_to_mainGameFragment2"
             app:destination="@id/mainGameFragment" />
     </fragment>
     <fragment
@@ -43,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewHeroFragment"
-        android:name="be.vives.gamesitor.ViewHeroFragment"
+        android:name="be.vives.gamesitor.viewHero.ViewHeroFragment"
         android:label="view_hero_fragment"
         tools:layout="@layout/view_hero_fragment" >
         <action
@@ -55,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/bagFragment"
-        android:name="be.vives.gamesitor.BagFragment"
+        android:name="be.vives.gamesitor.inventory.InventoryFragment"
         android:label="bag_fragment"
         tools:layout="@layout/inventory_fragment" >
         <action
@@ -64,7 +73,22 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="be.vives.gamesitor.SettingsFragment"
+        android:name="be.vives.gamesitor.settings.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/settings_fragment" />
+        tools:layout="@layout/settings_fragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="be.vives.gamesitor.detail.DetailFragment"
+        android:label="DetailFragment" >
+        <argument
+            android:name="itemId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_detailFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
 </navigation>
