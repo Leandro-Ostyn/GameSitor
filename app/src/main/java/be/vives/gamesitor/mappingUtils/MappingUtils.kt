@@ -63,8 +63,8 @@ fun List<DatabasePlayer>.asDomainModel(character: Character, inventory: Inventor
 
         Player(
             playerId = it.playerId,
-            name = it.name,
-            password = it.password,
+            name = it.name!!,
+            password = it.password!!,
             character = character,
             coins = it.coins,
             inventory = inventory,

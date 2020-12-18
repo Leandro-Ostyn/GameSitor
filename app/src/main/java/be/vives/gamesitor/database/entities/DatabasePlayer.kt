@@ -8,8 +8,8 @@ data class DatabasePlayer constructor(
 
     @PrimaryKey(autoGenerate = true)
     val playerId: Int,
-    val name: String,
-    val password: String,
+    val name: String?,
+    val password: String?,
     val characterId: Int,
     val coins: Long,
     val inventoryId: Int,

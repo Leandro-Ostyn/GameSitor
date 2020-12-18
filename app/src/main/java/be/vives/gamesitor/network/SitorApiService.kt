@@ -36,6 +36,9 @@ interface SitorApiService {
     @GET("CategoryApi")
     fun getCategories(): Deferred<List<DatabaseCategory>>
 
+    @GET("PlayerApi")
+    fun getPlayers(): Deferred<List<DatabasePlayer>>
+
     @GET("CategoryTypeApi")
     fun getCategoryTypes(): Deferred<List<CategoryTypeCrossRef>>
 

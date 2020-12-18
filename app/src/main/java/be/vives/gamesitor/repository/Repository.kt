@@ -1,16 +1,14 @@
-package be.vives.gamesitor.database.repositories
+package be.vives.gamesitor.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import be.vives.gamesitor.mappingUtils.*
 import be.vives.gamesitor.database.GameSitorDatabase
-import be.vives.gamesitor.database.dbRelationships.crossRefs.InventoryItemsCrossRef
 import be.vives.gamesitor.database.dbRelationships.crossRefs.ItemEffectCrossRef
 import be.vives.gamesitor.database.entities.DatabasePlayer
+import be.vives.gamesitor.database.entities.DatabaseStage
 import be.vives.gamesitor.models.Background
 import be.vives.gamesitor.models.Item
-import be.vives.gamesitor.models.Player
 import be.vives.gamesitor.network.SitorApi
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -41,7 +39,7 @@ class Repository(private val database: GameSitorDatabase) {
 
     fun insertItemToInventory(itemId: Int): Boolean {
         val inventoryId = player.value?.inventoryId
-        val itemsori = items.value?.get(1)?.name
+
         return try {
             if (inventoryId != null) {
                 database.inventoryDao.insertCrossReff(itemId, inventoryId)
@@ -51,6 +49,14 @@ class Repository(private val database: GameSitorDatabase) {
             false
         }
 
+    }
+
+    fun getStage(stageId: Int): LiveData<DatabaseStage> {
+        return database.stageDao.getStageById(stageId)
+    }
+
+    fun getplayer(): LiveData<DatabasePlayer> {
+        return player
     }
     //Fetching  From Api, mapping to DatabaseModel
 
@@ -71,6 +77,14 @@ class Repository(private val database: GameSitorDatabase) {
             Timber.i("Inserted all categories to db")
         }
 
+    }
+
+    suspend fun refreshPlayers(){
+        withContext(Dispatchers.IO){
+            val playerlist = SitorApi.sitorApiService.getPlayers().await()
+            database.playerDao.insertAll(*playerlist.toTypedArray())
+            Timber.i("Inserted all players to db")
+        }
     }
 
     suspend fun refreshCategoryTypes() {

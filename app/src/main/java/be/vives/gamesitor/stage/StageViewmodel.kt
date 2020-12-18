@@ -2,17 +2,9 @@ package be.vives.gamesitor.stage
 
 import android.app.Application
 import androidx.lifecycle.*
-import be.vives.gamesitor.database.entities.DatabaseEffect
-import be.vives.gamesitor.database.entities.DatabaseItem
 import be.vives.gamesitor.database.getDatabase
-import be.vives.gamesitor.database.repositories.Repository
+import be.vives.gamesitor.repository.Repository
 import be.vives.gamesitor.gameEngine.BattleEngine
-import be.vives.gamesitor.models.Character
-import be.vives.gamesitor.models.Equipment
-import be.vives.gamesitor.models.Item
-import be.vives.gamesitor.models.Stats
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class StageViewmodel(application: Application) : AndroidViewModel(application) {
     val battleEngine: BattleEngine = BattleEngine()
@@ -34,7 +26,7 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
 
     private val _hpCharacterEnemy = MutableLiveData<Int>()
     val hpCharacterEnemy: LiveData<Int> get() = _hpCharacterEnemy
-
+    private val stage = repository.getStage(1)
     init {
 
         _attacked.value = false
