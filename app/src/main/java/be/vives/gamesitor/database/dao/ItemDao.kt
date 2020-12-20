@@ -25,9 +25,11 @@ interface ItemDao {
     @Query("select * from itemeffectcrossref")
     fun getEffectListSet(): LiveData<List<ItemEffectCrossRef>>
 
+    @Transaction
     @Query("SELECT * FROM databaseitem")
     fun getAllItemsWithEffects(): LiveData<List<Item>>
 
+    @Transaction
     @Query("SELECT * FROM databaseitem where itemId= :itemId")
     fun getItemsWithEffects(itemId: Int): LiveData<Item>
 }

@@ -1,51 +1,55 @@
 package be.vives.gamesitor.user.login.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import be.vives.gamesitor.database.GameSitorDatabase
-import be.vives.gamesitor.user.login.data.model.LoggedInUser
-import java.io.IOException
+import be.vives.gamesitor.database.entities.DatabasePlayer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class LoginRepository(private val database: GameSitorDatabase) {
 
-    var user: LoggedInUser? = null
-        private set
+    private val _loggedIn = MutableLiveData<DatabasePlayer>()
+    val loggedIn: LiveData<DatabasePlayer> get() = _loggedIn
 
-    val isLoggedIn: Boolean
-        get() = user != null
 
     init {
-        user = null
+        _loggedIn.value = null
     }
 
-//    fun logout() {
-//        user = null
-//            .logout()
-//    }
-//
-//    fun loginresult(): Result<LoggedInUser> {
-//        val result = dataSource.login(username, password)
-//
-//        if (result is Result.Success) {
-//            setLoggedInUser(result.data)
-//        }
-//
-//        return result
-//    }
+    fun logout() {
+        _loggedIn.value = null
+    }
 
-    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        this.user = loggedInUser
+    fun getplayer(name: String, password: String): LiveData<DatabasePlayer> {
+        return database.playerDao.getPlayerByUserNameAndPass(name, password)
     }
 
 
-//    private fun login(username: String, password: String): Result<LoggedInUser> {
-//        try {
-//            val player = database.playerDao.getPlayerByUserName(username)
-//            if (player.value != null) {
-//
-//                return Result.Success(player)
-//            }
-//        } catch (e: Throwable) {
-//            return Result.Error(IOException("Error logging in", e))
-//        }
-//    }
+    fun login(player: DatabasePlayer) {
+        _loggedIn.postValue(player)
+    }
+
+    suspend fun register(username: String, password: String) {
+        withContext(Dispatchers.IO) {
+            var player = DatabasePlayer(
+                playerId = 0,
+                characterId = 11,
+                coins = 500L,
+                eXP = 0L,
+                inventoryId = 11,
+                name = username,
+                password = password,
+                statusPointsLeft = 5,
+                statusPointsStrength = 0,
+                statusPointsHitpoints = 0,
+                statusPointsDefence = 0,
+                statusPointsAttack = 0
+            )
+
+            database.playerDao.insertAll(player)
+        }
+    }
+
 }

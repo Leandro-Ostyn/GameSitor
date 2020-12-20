@@ -6,15 +6,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import be.vives.gamesitor.database.entities.DatabasePlayer
-import be.vives.gamesitor.models.Player
 
 @Dao
 interface PlayerDao {
     @Query("select * from DatabasePlayer")
     fun getPlayers(): LiveData<List<DatabasePlayer>>
 
-    @Query("Select * from DatabasePlayer where name =:name")
-    fun getPlayerByUserName(name: String): LiveData<DatabasePlayer>
+
+    @Query("Select * from DatabasePlayer where name =:name and password = :password")
+     fun getPlayerByUserNameAndPass(name: String, password: String): LiveData<DatabasePlayer>
 
 //    @Query("Select * from DatabasePlayer where playerId =:playerId")
 //    fun getPlayerByUserNameWithCharacterAndInventory(playerId: Int): LiveData<Player>

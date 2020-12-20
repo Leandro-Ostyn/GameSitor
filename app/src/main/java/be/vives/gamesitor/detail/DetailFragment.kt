@@ -1,5 +1,6 @@
 package be.vives.gamesitor.detail
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,14 +40,20 @@ class DetailFragment : Fragment() {
             }
         })
         binding.btnPurchase.setOnClickListener {
-            detailViewModel.buySelectedItem(itemid)
+            detailViewModel.player.observe(viewLifecycleOwner, Observer {
+                if (it!=null){
+                    detailViewModel.buySelectedItem(itemid, it.playerId)
+                }
+            })
         }
+
+
 
 
         detailViewModel.boughtSelectedItem.observe(viewLifecycleOwner, Observer {
             if (it) {
                 findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToShopFragment())
-           detailViewModel.setfalse()
+                detailViewModel.setfalse()
             }
         })
         return binding.root

@@ -1,16 +1,14 @@
 package be.vives.gamesitor.user.login.ui.login
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 
 import android.util.Patterns
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.*
 import be.vives.gamesitor.R
+import be.vives.gamesitor.database.entities.DatabasePlayer
 import be.vives.gamesitor.database.getDatabase
-import be.vives.gamesitor.user.login.data.LoginDataSource
 import be.vives.gamesitor.user.login.data.LoginRepository
-import be.vives.gamesitor.user.login.data.Result
+import kotlinx.coroutines.launch
 
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,16 +21,24 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-//    fun login(username: String, password: String) {
-//        //val result = loginRepository.login(username, password)
-//
-//        if (result is Result.Success) {
-//            _loginResult.value =
-//                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-//        } else {
-//            _loginResult.value = LoginResult(error = R.string.login_failed)
-//        }
-//    }
+    private val _loggedInPlayer = MutableLiveData<DatabasePlayer>()
+    val loggedInPlayer: LiveData<DatabasePlayer> get() = _loggedInPlayer
+
+    fun login(player: DatabasePlayer) {
+        _loggedInPlayer.postValue(player)
+        _loginResult.postValue(LoginResult(LoggedInUserView(player.name!!)))
+    }
+
+
+    fun getplayer(name: String, password: String): LiveData<DatabasePlayer> {
+       return loginRepository.getplayer(name, password)
+    }
+
+    fun register(username: String, password: String) {
+        viewModelScope.launch {
+            loginRepository.register(username, password)
+        }
+    }
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
@@ -57,4 +63,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
+
+
 }

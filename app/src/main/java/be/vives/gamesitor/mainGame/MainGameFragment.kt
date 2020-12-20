@@ -31,7 +31,13 @@ class MainGameFragment : Fragment() {
     ): View? {
 
         mainGameViewmodel.progress.observe(viewLifecycleOwner, Observer {
-            Timber.i("this is how many are completed $it of the 18")
+            Timber.i("this is how many are completed $it of the 20")
+        })
+
+        mainGameViewmodel.status.observe(viewLifecycleOwner, Observer {
+            if (it.name=="Error"){
+                Timber.i("yep we got an error !")
+            }
         })
         binding = DataBindingUtil.inflate(inflater, R.layout.main_game_fragment, container, false)
         // Inflate the layout for this fragment

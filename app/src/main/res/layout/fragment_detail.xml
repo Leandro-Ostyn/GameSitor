@@ -36,7 +36,7 @@
                 android:id="@+id/item_Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/item_name"
+                android:text="@{viewModel.selectedItem.name}"
                 android:textColor="#de000000"
                 android:textSize="39sp"
                 app:layout_constraintBottom_toBottomOf="parent"

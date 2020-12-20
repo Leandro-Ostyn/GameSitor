@@ -2,9 +2,11 @@ package be.vives.gamesitor.stage
 
 import android.app.Application
 import androidx.lifecycle.*
+import be.vives.gamesitor.database.entities.DatabaseStage
 import be.vives.gamesitor.database.getDatabase
 import be.vives.gamesitor.repository.Repository
 import be.vives.gamesitor.gameEngine.BattleEngine
+import be.vives.gamesitor.models.Stage
 
 class StageViewmodel(application: Application) : AndroidViewModel(application) {
     val battleEngine: BattleEngine = BattleEngine()
@@ -13,7 +15,8 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
 
     private val _attacked = MutableLiveData<Boolean>()
     val attacked: LiveData<Boolean> get() = _attacked
-
+    private val _stage = MutableLiveData<DatabaseStage>()
+    val stage: LiveData<DatabaseStage> get() = _stage
     private val _HpCharachterHero = MutableLiveData<Int>()
     val hpCharacterHero: LiveData<Int> get() = _HpCharachterHero
     var hpheroStart: Int = 0
@@ -26,9 +29,10 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
 
     private val _hpCharacterEnemy = MutableLiveData<Int>()
     val hpCharacterEnemy: LiveData<Int> get() = _hpCharacterEnemy
-    private val stage = repository.getStage(1)
-    init {
+    private val stageset = repository.getStage(1)
 
+    init {
+        _stage.value = repository.getStage(1).value
         _attacked.value = false
         _gameLost.value = false
         _gameWon.value = false
@@ -37,7 +41,6 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
         hpheroStart = _HpCharachterHero.value!!
         hpEnemyStart = _hpCharacterEnemy.value!!
     }
-
 
 
     private val _typeId: MutableLiveData<Int> = MutableLiveData()

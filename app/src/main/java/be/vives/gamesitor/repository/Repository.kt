@@ -1,35 +1,41 @@
 package be.vives.gamesitor.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-import be.vives.gamesitor.mappingUtils.*
+import androidx.lifecycle.map
 import be.vives.gamesitor.database.GameSitorDatabase
 import be.vives.gamesitor.database.dbRelationships.crossRefs.ItemEffectCrossRef
 import be.vives.gamesitor.database.entities.DatabasePlayer
 import be.vives.gamesitor.database.entities.DatabaseStage
+import be.vives.gamesitor.mappingUtils.asDomainModelBackground
 import be.vives.gamesitor.models.Background
 import be.vives.gamesitor.models.Item
 import be.vives.gamesitor.network.SitorApi
-import kotlinx.coroutines.*
+import be.vives.gamesitor.user.login.data.LoginRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.lang.Exception
 
 
 class Repository(private val database: GameSitorDatabase) {
 
+    private val loginRepository = LoginRepository(database)
 
     // Fetching from Database , mapping to DomainModel
     val backgrounds: LiveData<List<Background>> =
         Transformations.map(database.backgroundDao.getBackgrounds()) {
             it.asDomainModelBackground()
         }
-    private val _player = database.playerDao.getPlayerByUserName("Player")
+    private val _player = database.playerDao.getPlayerByUserNameAndPass("varsium","password")
     val player: LiveData<DatabasePlayer> get() = _player
-
+    val background: LiveData<List<Background>> = Transformations.map(backgrounds) {
+        it.filter { background -> background.backgroundId == 1 }
+    }
     private val _itemEffectCrossRef: LiveData<List<ItemEffectCrossRef>> =
         database.itemDao.getEffectListSet()
     val itemEffectCrossRef: LiveData<List<ItemEffectCrossRef>> get() = _itemEffectCrossRef
-
 
     val items: LiveData<List<Item>> = database.itemDao.getAllItemsWithEffects()
 
@@ -37,26 +43,27 @@ class Repository(private val database: GameSitorDatabase) {
         return database.itemDao.getItemsWithEffects(itemId)
     }
 
-    fun insertItemToInventory(itemId: Int): Boolean {
-        val inventoryId = player.value?.inventoryId
 
-        return try {
-            if (inventoryId != null) {
-                database.inventoryDao.insertCrossReff(itemId, inventoryId)
-            }
-            true
-        } catch (e: Exception) {
-            false
+
+    //Still needs checking
+    suspend fun insertItemToInventory(itemId: Int, playerId: Int) {
+        withContext(Dispatchers.IO) {
+            database.inventoryDao.insertCrossReff(itemId, playerId)
         }
 
     }
+
 
     fun getStage(stageId: Int): LiveData<DatabaseStage> {
         return database.stageDao.getStageById(stageId)
     }
 
-    fun getplayer(): LiveData<DatabasePlayer> {
-        return player
+
+    //Fetching from Database
+    suspend fun getBackgrounds() {
+        withContext(Dispatchers.IO) {
+            val backgroundList = database.backgroundDao.getBackgrounds()
+        }
     }
     //Fetching  From Api, mapping to DatabaseModel
 
@@ -79,8 +86,8 @@ class Repository(private val database: GameSitorDatabase) {
 
     }
 
-    suspend fun refreshPlayers(){
-        withContext(Dispatchers.IO){
+    suspend fun refreshPlayers() {
+        withContext(Dispatchers.IO) {
             val playerlist = SitorApi.sitorApiService.getPlayers().await()
             database.playerDao.insertAll(*playerlist.toTypedArray())
             Timber.i("Inserted all players to db")

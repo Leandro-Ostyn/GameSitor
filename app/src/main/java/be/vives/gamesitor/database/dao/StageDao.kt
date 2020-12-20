@@ -18,6 +18,10 @@ interface StageDao {
     @Query("select * from databasestage where stageId= :stageId")
     fun getStageById(stageId : Int): LiveData<DatabaseStage>
 
+
+//    @Query("select * from databasestage where stageId= :stageId")
+//    fun getStageByIdJoins(stageId : Int): LiveData<Stage>
+
 //    @Query("select * from databasestage where stageId= :stageId")
 //    fun getStageByIdWithCharacterRewardAndBackground(stageId : Int): LiveData<Stage>
 //

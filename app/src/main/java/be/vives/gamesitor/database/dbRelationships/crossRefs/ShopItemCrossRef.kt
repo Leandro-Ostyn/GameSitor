@@ -1,9 +1,11 @@
 package be.vives.gamesitor.database.dbRelationships.crossRefs
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(primaryKeys = ["shopId", "itemId"])
+@Entity
 data class ShopItemCrossRef(
+    @PrimaryKey(autoGenerate = true)
     val stockId: Int,
     val shopId: Int,
     val itemId: Int,

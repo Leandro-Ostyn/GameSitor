@@ -76,14 +76,13 @@ class BattleEngine {
 
     fun calculateBonus(attribute: String, character: Character): Long {
         var bonus = 0L
-        if (character.equipment != null) {
-            for (equipmentItem in character.equipment.items!!)
+            for (equipmentItem in character.equipment.items)
 //                for (itemEffect in equipmentItem.effects) {
 //                    if (itemEffect!!.attribute == attribute) {
 //                        bonus += itemEffect.value
 //                    }
     Timber.i("")
-                }
+
 
         return bonus
     }

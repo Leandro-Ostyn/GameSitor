@@ -2,9 +2,12 @@ package be.vives.gamesitor.detail
 
 import android.app.Application
 import androidx.lifecycle.*
+import be.vives.gamesitor.database.entities.DatabasePlayer
 import be.vives.gamesitor.database.getDatabase
 import be.vives.gamesitor.repository.Repository
 import be.vives.gamesitor.models.Item
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailViewModel(itemId: Int, app: Application) : AndroidViewModel(app) {
     private val database = getDatabase(app)
@@ -13,20 +16,24 @@ class DetailViewModel(itemId: Int, app: Application) : AndroidViewModel(app) {
     val selectedItem: LiveData<Item>
         get() = _selectedItem
 
-    val player =repository.player
+    val player = repository.player
 
     private val _boughtSelectedItem = MutableLiveData<Boolean>()
     val boughtSelectedItem: LiveData<Boolean>
         get() = _boughtSelectedItem
 
-    fun buySelectedItem(itemId: Int) {
-
-        _boughtSelectedItem.value = repository.insertItemToInventory(itemId)
+    fun buySelectedItem(itemId: Int, playerId : Int) {
+        viewModelScope.launch {
+            repository.insertItemToInventory(itemId,playerId)
+            _boughtSelectedItem.value = true;
+        }
     }
 
-    fun setfalse(){
-        _boughtSelectedItem.value= false
+    fun setfalse() {
+        _boughtSelectedItem.value = false
     }
+
+
 
     class DetailViewModelFactory(
         private val itemId: Int,

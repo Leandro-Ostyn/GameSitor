@@ -4,7 +4,10 @@ import android.app.Application
 import androidx.lifecycle.*
 import be.vives.gamesitor.database.getDatabase
 import be.vives.gamesitor.repository.Repository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 enum class SitorApiStatus { LOADING, ERROR, DONE }
 class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
@@ -25,7 +28,8 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
 
     init {
         _progress.value = 0
-        viewModelScope.launch {
+
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshBackgrounds()
@@ -34,7 +38,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshCategories()
@@ -43,7 +47,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshCategoryTypes()
@@ -52,16 +56,17 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshCharacterList()
                 _status.postValue(SitorApiStatus.DONE)
             } catch (e: Exception) {
+                Timber.i(e.message)
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshEffects()
@@ -70,7 +75,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshEffectLists()
@@ -79,7 +84,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshEquipmentList()
@@ -88,7 +93,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshEquipmentItemsList()
@@ -97,25 +102,25 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
-            try {
-                _status.postValue(SitorApiStatus.LOADING)
-                repository.refreshInventoryList()
-                _status.postValue(SitorApiStatus.DONE)
-            } catch (e: Exception) {
-                _status.postValue(SitorApiStatus.ERROR)
-            }
-        }
-        viewModelScope.launch {
-            try {
-                _status.postValue(SitorApiStatus.LOADING)
-                repository.refreshInventoryItemsList()
-                _status.postValue(SitorApiStatus.DONE)
-            } catch (e: Exception) {
-                _status.postValue(SitorApiStatus.ERROR)
-            }
-        }
-        viewModelScope.launch {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                _status.postValue(SitorApiStatus.LOADING)
+//                repository.refreshInventoryList()
+//                _status.postValue(SitorApiStatus.DONE)
+//            } catch (e: Exception) {
+//                _status.postValue(SitorApiStatus.ERROR)
+//            }
+//        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                _status.postValue(SitorApiStatus.LOADING)
+//                repository.refreshInventoryItemsList()
+//                _status.postValue(SitorApiStatus.DONE)
+//            } catch (e: Exception) {
+//                _status.postValue(SitorApiStatus.ERROR)
+//            }
+//        }
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshItems()
@@ -124,7 +129,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshRewards()
@@ -133,7 +138,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshShops()
@@ -142,7 +147,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshStage()
@@ -151,7 +156,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshStats()
@@ -160,7 +165,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshStocks()
@@ -169,7 +174,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshTypes()
@@ -178,7 +183,7 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
                 _status.postValue(SitorApiStatus.ERROR)
             }
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _status.postValue(SitorApiStatus.LOADING)
                 repository.refreshTypeItems()
@@ -188,15 +193,15 @@ class MainGameViewmodel(app: Application) : AndroidViewModel(app) {
             }
         }
 
-        viewModelScope.launch {
-            try {
-                _status.postValue(SitorApiStatus.LOADING)
-                repository.refreshPlayers()
-                _status.postValue(SitorApiStatus.DONE)
-            } catch (e: Exception) {
-                _status.postValue(SitorApiStatus.ERROR)
-            }
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                _status.postValue(SitorApiStatus.LOADING)
+//                repository.refreshPlayers()
+//                _status.postValue(SitorApiStatus.DONE)
+//            } catch (e: Exception) {
+//                _status.postValue(SitorApiStatus.ERROR)
+//            }
+//        }
     }
 
     class MainGameViewmodelFactory(val app: Application) : ViewModelProvider.Factory {
