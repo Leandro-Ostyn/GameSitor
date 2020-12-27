@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".BagFragment">
 
+    <data>
 
+        <variable
+            name="viewmodel"
+            type="be.vives.gamesitor.inventory.InventoryViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,14 +18,19 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RVInventory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:layout_height="300dp"
+            android:padding="6dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.238"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.497" />
+            app:layout_constraintVertical_bias="0.497"
+            app:listData="@{viewmodel.items}"
+            app:spanCount="7"
+            tools:itemCount="20"
+            tools:listitem="@layout/grid_view_item" />
 
         <Button
             android:id="@+id/btnMain"

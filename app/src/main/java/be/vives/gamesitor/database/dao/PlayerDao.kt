@@ -13,8 +13,8 @@ interface PlayerDao {
     fun getPlayers(): LiveData<List<DatabasePlayer>>
 
 
-    @Query("Select * from DatabasePlayer where name =:name and password = :password")
-     fun getPlayerByUserNameAndPass(name: String, password: String): LiveData<DatabasePlayer>
+    @Query("Select * from DatabasePlayer where name =:name")
+     fun getPlayerByUserName(name: String): LiveData<DatabasePlayer>
 
 //    @Query("Select * from DatabasePlayer where playerId =:playerId")
 //    fun getPlayerByUserNameWithCharacterAndInventory(playerId: Int): LiveData<Player>

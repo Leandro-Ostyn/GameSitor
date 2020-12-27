@@ -1,12 +1,11 @@
 package be.vives.gamesitor.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import be.vives.gamesitor.database.dbRelationships.crossRefs.InventoryItemsCrossRef
 import be.vives.gamesitor.database.entities.DatabaseInventory
+import be.vives.gamesitor.models.Inventory
+import be.vives.gamesitor.models.Item
 
 @Dao
 interface InventoryDao {
@@ -15,10 +14,10 @@ interface InventoryDao {
     fun getInventories(): LiveData<List<DatabaseInventory>>
 
     @Query("select * from databaseinventory where inventoryId= :inventoryId ")
-    fun getInventoryForPlayer(inventoryId: Int): LiveData<List<DatabaseInventory>>
+    fun getInventoryForPlayer(inventoryId: Int): LiveData<DatabaseInventory>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg inventories: DatabaseInventory)
+    fun insertAll(vararg inventories: DatabaseInventory): List<Long>
 
     @Query("insert into InventoryItemsCrossRef (itemId, inventoryId) values (:itemId, :inventoryId)")
     fun insertCrossReff(itemId: Int, inventoryId: Int)
@@ -26,5 +25,14 @@ interface InventoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllCrossReffs(vararg inventories: InventoryItemsCrossRef)
 
+    @Transaction
+    @Query("SELECT * FROM InventoryItemsCrossRef where inventoryId = :inventoryId")
+    fun getCrossReffInventoryItems(inventoryId: Int): LiveData<List<InventoryItemsCrossRef>>
 
+    @Query("SELECT * FROM InventoryItemsCrossRef")
+    fun getAllCrossReffInventoryItems(): LiveData<List<InventoryItemsCrossRef>>
+
+
+    @Query("Delete  FROM InventoryItemsCrossRef where inventoryId = :inventoryId and itemId =:itemId")
+   fun deleteCrossReff(inventoryId: Int,itemId: Int)
 }

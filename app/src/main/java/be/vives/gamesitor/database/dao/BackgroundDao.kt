@@ -12,7 +12,7 @@ interface BackgroundDao {
     fun getBackgrounds(): LiveData<List<DatabaseBackground>>
 
     @Query("select * from databasebackground where backgroundId = :backgroundId")
-    fun getBackgroundById(backgroundId: Int): LiveData<List<DatabaseBackground>>
+    fun getBackgroundById(backgroundId: Int): LiveData<DatabaseBackground>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

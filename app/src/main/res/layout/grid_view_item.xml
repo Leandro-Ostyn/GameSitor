@@ -23,9 +23,8 @@
             android:id="@+id/mars_image"
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:adjustViewBounds="true"
             android:padding="2dp"
-            android:scaleType="centerCrop"
+            app:imageUrlDataGrid="@{item.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -44,9 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.285"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/mars_image" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

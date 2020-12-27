@@ -1,4 +1,4 @@
-package be.vives.gamesitor.user.login.data
+package be.vives.gamesitor.models.loginModels
 
 import androidx.lifecycle.LiveData
 import be.vives.gamesitor.database.entities.DatabasePlayer

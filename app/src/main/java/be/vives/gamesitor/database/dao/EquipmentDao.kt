@@ -14,19 +14,15 @@ interface EquipmentDao {
     @Query("select * from databaseequipment")
     fun getEquipments(): LiveData<List<DatabaseEquipment>>
 
-//    @Query("select * from databaseequipment")
-//    fun getEquipmentsWithItems(): LiveData<List<Equipment>>
-//
-//    @Query("select * from databaseequipment where characterId= :characterId")
-//    fun getEquipmentsWithItemsFromCharacter(characterId: Int): LiveData<Equipment>
-//
-//    @Query("Update equipmentitemscrossref set equipmentId= :equipmentId, itemId= :itemId where equipmentItemsId= :equipmentItemsId")
-//    fun setEquipmentItemsFromCharacter(
-//        equipmentItemsId: Int,
-//        equipmentId: Int,
-//        itemId: Int
-//    ): LiveData<Equipment>
+    @Query("select * from databaseequipment where characterId= :characterId")
+    fun getEquipmentFromCharacter(characterId: Int): LiveData<DatabaseEquipment>
 
+    @Query("select * from equipmentitemscrossref where equipmentId = :equipmentId")
+    fun getItemsFromEquipment(equipmentId: Int): LiveData<List<EquipmentItemsCrossRef>>
+
+
+    @Query("select * from equipmentitemscrossref")
+    fun getEquipmentItemsCrossRef(): LiveData<List<EquipmentItemsCrossRef>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg equipments: DatabaseEquipment)

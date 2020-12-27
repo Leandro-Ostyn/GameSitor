@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/mainGameFragment">
+    app:startDestination="@id/loginFragment2">
 
     <fragment
         android:id="@+id/mainGameFragment"
@@ -53,15 +53,15 @@
     </fragment>
     <fragment
         android:id="@+id/viewHeroFragment"
-        android:name="be.vives.gamesitor.viewHero.ViewHeroFragment"
+        android:name="be.vives.gamesitor.equipment.ViewHeroFragment"
         android:label="view_hero_fragment"
         tools:layout="@layout/view_hero_fragment" >
         <action
-            android:id="@+id/action_viewHeroFragment_to_bagFragment"
-            app:destination="@id/bagFragment" />
-        <action
             android:id="@+id/action_viewHeroFragment_to_mainGameFragment"
             app:destination="@id/mainGameFragment" />
+        <action
+            android:id="@+id/action_viewHeroFragment_to_equipmentListFragment"
+            app:destination="@id/equipmentListFragment" />
     </fragment>
     <fragment
         android:id="@+id/bagFragment"
@@ -71,6 +71,10 @@
         <action
             android:id="@+id/action_bagFragment_to_mainGameFragment"
             app:destination="@id/mainGameFragment" />
+        <action
+            android:id="@+id/action_bagFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -94,5 +98,47 @@
             app:launchSingleTop="false"
             app:popUpTo="@id/shopFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="actionForItem"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailFragment_to_bagFragment"
+            app:destination="@id/bagFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_detailFragment_to_viewHeroFragment"
+            app:destination="@id/viewHeroFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="be.vives.gamesitor.loading.LoadingFragment"
+        android:label="loading_fragment"
+        tools:layout="@layout/loading_fragment" >
+        <action
+            android:id="@+id/action_loadingFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="be.vives.gamesitor.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment2_to_loadingFragment"
+            app:destination="@id/loadingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/equipmentListFragment"
+        android:name="be.vives.gamesitor.equipmentList.EquipmentListFragment"
+        android:label="equipment_list_fragment"
+        tools:layout="@layout/equipment_list_fragment" >
+        <action
+            android:id="@+id/action_equipmentListFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <argument
+            android:name="type"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -23,19 +23,20 @@
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:scaleType="fitXY"
+            app:imageUrlDataGrid="@{viewmodel.settedStage.background.image}"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-           />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/HpbarEnemy"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:max="@{viewmodel.hpEnemyStart}"
-            android:progress="@{viewmodel.hpCharacterEnemy}"
+            android:max="@{viewmodel.settedStage.character.stats.lifepoints}"
+            android:progress="@{viewmodel.settedStage.character.stats.lifepoints}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.986"
@@ -48,8 +49,8 @@
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:max="@{viewmodel.hpheroStart}"
-            android:progress="@{viewmodel.hpCharacterHero}"
+            android:max="@{viewmodel.hero.stats.lifepoints}"
+            android:progress="@{viewmodel.hero.stats.lifepoints}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -74,49 +75,50 @@
             android:id="@+id/btnAttack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Attack"
+            android:text="@string/attack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.664"
+            app:layout_constraintHorizontal_bias="0.401"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.911" />
+            app:layout_constraintVertical_bias="0.925" />
 
         <Button
             android:id="@+id/btnLeave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Run away"
+            android:text="@string/run_away"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.937"
+            app:layout_constraintHorizontal_bias="0.606"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.911" />
+            app:layout_constraintVertical_bias="0.925" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/ImgHero"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            app:imageUrlDataGrid="@{viewmodel.hero.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.106"
+            app:layout_constraintHorizontal_bias="0.062"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/lblTimer"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/enemy" />
+            app:layout_constraintVertical_bias="0.861" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imgEnemy"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:scaleType="fitXY"
+            app:imageUrlDataGrid="@{viewmodel.enemy.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintHorizontal_bias="0.969"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/lblTimer"
-            app:layout_constraintVertical_bias="0.261"
-            app:srcCompat="@drawable/test2" />
+            app:layout_constraintVertical_bias="0.861" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

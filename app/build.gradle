@@ -82,11 +82,13 @@ dependencies {
     // RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+
     // Core with Ktx
     implementation "androidx.core:core-ktx:$version_core"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    //Logging
+    //SitorApplication
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Navigation

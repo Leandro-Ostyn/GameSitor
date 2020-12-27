@@ -1,9 +1,11 @@
-package be.vives.gamesitor.user.login.data
+package be.vives.gamesitor.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import be.vives.gamesitor.database.GameSitorDatabase
+import be.vives.gamesitor.database.entities.DatabaseInventory
 import be.vives.gamesitor.database.entities.DatabasePlayer
+import be.vives.gamesitor.models.Inventory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -22,23 +24,36 @@ class LoginRepository(private val database: GameSitorDatabase) {
         _loggedIn.value = null
     }
 
-    fun getplayer(name: String, password: String): LiveData<DatabasePlayer> {
-        return database.playerDao.getPlayerByUserNameAndPass(name, password)
-    }
-
-
     fun login(player: DatabasePlayer) {
         _loggedIn.postValue(player)
     }
 
-    suspend fun register(username: String, password: String) {
+    suspend fun getInventories(): LiveData<List<DatabaseInventory>> {
+        return withContext(Dispatchers.IO) {
+            return@withContext database.inventoryDao.getInventories()
+        }
+    }
+
+    suspend fun createInventory(): List<Long> {
+        return withContext(Dispatchers.IO) {
+            return@withContext database.inventoryDao.insertAll(
+                DatabaseInventory(
+                    inventoryId = 0,
+                    name = "PlayerInventory"
+                )
+            )
+        }
+
+    }
+
+    suspend fun register(username: String, password: String, inventoryId: Int) {
         withContext(Dispatchers.IO) {
-            var player = DatabasePlayer(
+            val player = DatabasePlayer(
                 playerId = 0,
                 characterId = 11,
                 coins = 500L,
                 eXP = 0L,
-                inventoryId = 11,
+                inventoryId = inventoryId,
                 name = username,
                 password = password,
                 statusPointsLeft = 5,
@@ -47,8 +62,8 @@ class LoginRepository(private val database: GameSitorDatabase) {
                 statusPointsDefence = 0,
                 statusPointsAttack = 0
             )
-
             database.playerDao.insertAll(player)
+            _loggedIn.postValue(player)
         }
     }
 

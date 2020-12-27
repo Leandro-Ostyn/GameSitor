@@ -1,4 +1,5 @@
 package be.vives.gamesitor.adapters
+
 import PhotoGridAdapter
 import android.view.View
 import android.widget.ImageView
@@ -7,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import be.vives.gamesitor.models.Item
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 /**
  * Binding adapter used to hide the spinner once data is available
@@ -21,7 +23,9 @@ fun goneIfNotNull(view: View, it: Any?) {
  */
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, url: String) {
-    Glide.with(imageView.context).load(url).into(imageView)
+    Glide.with(imageView.context).load(url)
+        .centerCrop()
+        .into(imageView)
 }
 
 @BindingAdapter("listData")
@@ -30,12 +34,14 @@ fun RecyclerView.bindRecyclerView(data: List<Item?>?) {
     adapter.submitList(data)
 }
 
-@BindingAdapter("imageUrl2")
+@BindingAdapter("imageUrlDataGrid")
 fun ImageView.bindImage(imgUrl: String?) {
-    imgUrl?.let {
-        val imgUri = it.toUri().buildUpon().scheme("https").build()
+    if (imgUrl != null) {
+        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
         Glide.with(context)
             .load(imgUri)
+            .centerInside()
             .into(this)
     }
+
 }

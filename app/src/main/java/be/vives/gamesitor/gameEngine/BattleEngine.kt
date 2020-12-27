@@ -3,6 +3,7 @@ package be.vives.gamesitor.gameEngine
 import be.vives.gamesitor.models.Character
 import timber.log.Timber
 import java.util.*
+import kotlin.math.roundToInt
 
 class BattleEngine {
     //Nog verder uitwerken met equipment, en items.
@@ -60,17 +61,14 @@ class BattleEngine {
     }
 
     fun calculateMaxHit(character: Character): Int {
-        var rawstrength = character.stats.strength * character.level
+        var rawstrength = character.stats.strength * (character.exp+1)
         //This is for correct calculation
         rawstrength += 8
         Timber.i(rawstrength.toString())
-        val calculation = Math.round(
-            0.5 + rawstrength * (calculateBonus(
-                "Strength",
-                character
-            ) + 64) / 640
-        )
-        return calculation.toInt()
+        return (0.5 + rawstrength * (calculateBonus(
+            "Strength",
+            character
+        ) + 64) / 640).roundToInt()
     }
 
 

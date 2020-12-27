@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".loading.LoadingFragment">
+
+<data>
+    <variable
+        name="viewmodel"
+        type="be.vives.gamesitor.loading.LoadingViewModel" />
+</data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constrainLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#050505">
+
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:scaleX="2.5"
+            android:scaleY="1.5"
+            android:src="@drawable/loadingscreen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/lblAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:text="@{viewmodel.progress.toString()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,4 +1,4 @@
-package be.vives.gamesitor.user.login.ui.login
+package be.vives.gamesitor.login
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class DatabaseInventory(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val inventoryId: Int,
     val name: String
 )

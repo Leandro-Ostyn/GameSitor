@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.MainGameFragmentBinding
+import be.vives.gamesitor.network.NetworkConnection
 import timber.log.Timber
 
 class MainGameFragment : Fragment() {
@@ -30,16 +31,28 @@ class MainGameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        mainGameViewmodel.progress.observe(viewLifecycleOwner, Observer {
-            Timber.i("this is how many are completed $it of the 20")
-        })
+//        val networkConnection = NetworkConnection(requireContext())
+//        networkConnection.observe(viewLifecycleOwner, Observer {
+//            if (it) {
+//                mainGameViewmodel.setNetWorkConnection(true)
+//            } else {
+//                mainGameViewmodel.setNetWorkConnection(false)
+//            }
+//        })
 
-        mainGameViewmodel.status.observe(viewLifecycleOwner, Observer {
-            if (it.name=="Error"){
-                Timber.i("yep we got an error !")
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.main_game_fragment, container, false)
+        binding.lifecycleOwner = this
+        binding.viewmodel = mainGameViewmodel
+        mainGameViewmodel.player.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                //TODO  nog bekijken waarom dit niet met databinding gaat
+
+                Timber.i("The player name : " + it.name + " " + it.coins.toString())
+            } else {
+                Timber.i("why is it null")
             }
         })
-        binding = DataBindingUtil.inflate(inflater, R.layout.main_game_fragment, container, false)
         // Inflate the layout for this fragment
         binding.btnBattle.setOnClickListener {
             findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToStageFragment())
@@ -56,8 +69,6 @@ class MainGameFragment : Fragment() {
         return binding.root
     }
 
+
 }
-
-
-
 

@@ -1,4 +1,4 @@
-package be.vives.gamesitor.user.login.ui.login
+package be.vives.gamesitor.models.loginModels
 
 /**
  * User details post authentication that is exposed to the UI

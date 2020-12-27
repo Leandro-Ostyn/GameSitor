@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import be.vives.gamesitor.database.dao.*
 import be.vives.gamesitor.database.dbRelationships.crossRefs.*
 import be.vives.gamesitor.database.entities.*
+import be.vives.gamesitor.repository.Repository
 
 
 @Database(
@@ -55,7 +56,6 @@ abstract class GameSitorDatabase : RoomDatabase() {
     abstract val typeDao: TypeDao
 
 
-
 }
 
 private lateinit var INSTANCE: GameSitorDatabase
@@ -74,4 +74,13 @@ fun getDatabase(context: Context): GameSitorDatabase {
     return INSTANCE
 }
 
+
+private lateinit var REPOINSTANCE: Repository
+
+fun getRepository(database: GameSitorDatabase): Repository {
+    if (!::REPOINSTANCE.isInitialized) {
+        REPOINSTANCE = Repository(database)
+    }
+    return REPOINSTANCE
+}
 

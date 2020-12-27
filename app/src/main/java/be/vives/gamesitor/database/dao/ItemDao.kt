@@ -32,4 +32,8 @@ interface ItemDao {
     @Transaction
     @Query("SELECT * FROM databaseitem where itemId= :itemId")
     fun getItemsWithEffects(itemId: Int): LiveData<Item>
+
+    @Transaction
+    @Query("SELECT * FROM databaseitem where itemId in(:list)")
+    fun getFilteredItemsWithEffects(list: List<Int>): LiveData<List<Item>>
 }

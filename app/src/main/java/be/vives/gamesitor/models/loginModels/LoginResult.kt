@@ -1,4 +1,4 @@
-package be.vives.gamesitor.user.login.ui.login
+package be.vives.gamesitor.models.loginModels
 
 /**
  * Authentication result : success (user details) or error message.

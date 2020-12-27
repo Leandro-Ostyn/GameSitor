@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.ShopFragmentBinding
-import timber.log.Timber
+import be.vives.gamesitor.detail.BUY
 
 
 class ShopFragment : Fragment() {
@@ -22,39 +22,36 @@ class ShopFragment : Fragment() {
             ShopViewmodel::class.java
         )
     }
-private lateinit var binding : ShopFragmentBinding
+    private lateinit var binding: ShopFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-         binding = DataBindingUtil.inflate(inflater,R.layout.shop_fragment, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.shop_fragment, container, false)
 
         binding.lifecycleOwner = this
 
         // Giving the binding access to the OverviewViewModel
         binding.viewmodel = shopViewmodel
 
-
-shopViewmodel.items.observe(viewLifecycleOwner, Observer {
-    Timber.i(it.size.toString())
-    }
-)
-
-
         binding.RVShop.adapter = PhotoGridAdapter(PhotoGridAdapter.OnClickListener {
-            shopViewmodel.displayPropertyDetails(it)
+            shopViewmodel.displayItemDetails(it)
         })
 
         shopViewmodel.navigateToSelectedItem.observe(viewLifecycleOwner, Observer {
-            it?.let{
-                findNavController().navigate(ShopFragmentDirections.actionShopFragmentToDetailFragment(it.itemId))
-                shopViewmodel.displayPropertyDetailsComplete()
+            it?.let {
+                findNavController().navigate(
+                    ShopFragmentDirections.actionShopFragmentToDetailFragment(
+                        it.itemId, BUY
+                    )
+                )
+                shopViewmodel.displayItemDetailsComplete()
             }
         })
 
-       return binding.root
+        return binding.root
     }
 
 

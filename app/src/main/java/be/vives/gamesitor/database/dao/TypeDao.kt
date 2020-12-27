@@ -14,14 +14,11 @@ interface TypeDao {
     @Query("select * from databasetype")
     fun getTypes(): LiveData<List<DatabaseType>>
 
-    @Query("select * from databasetype where typeId= :typeId")
-    fun getType(typeId: Int): LiveData<DatabaseType>
+    @Query("select * from databasetype where type= :type")
+    fun getTypeByName(type: String): LiveData<DatabaseType>
 
-//    @Query("select * from databasetype")
-//    fun getTypesWithItems(): LiveData<List<Type>>
-//
-//    @Query("select * from databasetype where typeId= :typeId")
-//    fun getTypeWithItems(typeId: Int): LiveData<Type>
+    @Query("select * from TypeItemCrossRef where typeId = :typeId")
+    fun getItemsByCrossRefWithType(typeId: Int): LiveData<List<TypeItemCrossRef>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -30,4 +27,6 @@ interface TypeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCrossReff(vararg types: TypeItemCrossRef)
 
+    @Query("select * from typeitemcrossref ")
+    fun getCrossReff(): LiveData<List<TypeItemCrossRef>>
 }

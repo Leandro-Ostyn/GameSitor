@@ -1,4 +1,4 @@
-package be.vives.gamesitor.user.login.ui.login
+package be.vives.gamesitor.models.loginModels
 
 /**
  * Data validation state of the login form.

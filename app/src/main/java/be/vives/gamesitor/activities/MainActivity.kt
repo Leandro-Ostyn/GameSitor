@@ -7,6 +7,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.ActivityMainBinding
+import com.bumptech.glide.Glide
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration

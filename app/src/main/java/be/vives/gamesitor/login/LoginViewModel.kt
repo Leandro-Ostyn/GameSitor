@@ -1,19 +1,28 @@
-package be.vives.gamesitor.user.login.ui.login
+package be.vives.gamesitor.login
 
 import android.app.Application
-
 import android.util.Patterns
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import be.vives.gamesitor.R
+import be.vives.gamesitor.database.entities.DatabaseInventory
 import be.vives.gamesitor.database.entities.DatabasePlayer
 import be.vives.gamesitor.database.getDatabase
-import be.vives.gamesitor.user.login.data.LoginRepository
+import be.vives.gamesitor.database.getRepository
+import be.vives.gamesitor.models.loginModels.LoggedInUserView
+import be.vives.gamesitor.models.loginModels.LoginFormState
+import be.vives.gamesitor.models.loginModels.LoginResult
+import be.vives.gamesitor.repository.LoginRepository
 import kotlinx.coroutines.launch
 
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
+
     private val database = getDatabase(application)
     private val loginRepository = LoginRepository(database)
+     private val repository = getRepository(database)
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -30,14 +39,37 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun getplayer(name: String, password: String): LiveData<DatabasePlayer> {
-       return loginRepository.getplayer(name, password)
+    fun getplayer(name: String): LiveData<DatabasePlayer> {
+        return repository.getPlayer(name)
+
     }
 
-    fun register(username: String, password: String) {
+    fun register(username: String, password: String, inventoryId: Int) {
         viewModelScope.launch {
-            loginRepository.register(username, password)
+            loginRepository.register(username, password, inventoryId)
         }
+    }
+
+    fun setPlayerForGame(databasePlayer: DatabasePlayer) {
+        viewModelScope.launch {
+            repository.setDbPlayer(databasePlayer)
+        }
+    }
+
+    fun prepareInventoryForPlayer(): MutableLiveData<List<DatabaseInventory>> {
+        val inventoryList = MutableLiveData<List<DatabaseInventory>>()
+        viewModelScope.launch {
+            inventoryList.postValue(loginRepository.getInventories().value)
+        }
+        return inventoryList
+    }
+
+    fun createInventoryForPlayer(): MutableLiveData<Long> {
+        val inventoryId = MutableLiveData<Long>()
+        viewModelScope.launch {
+            inventoryId.postValue(loginRepository.createInventory()[0])
+        }
+        return inventoryId
     }
 
     fun loginDataChanged(username: String, password: String) {
@@ -63,6 +95,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
+
+
 
 
 }
