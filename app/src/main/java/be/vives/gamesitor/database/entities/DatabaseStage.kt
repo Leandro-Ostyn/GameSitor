@@ -9,6 +9,6 @@ data class DatabaseStage(
     var stageId: Int,
     var name: String,
     var backgroundId: Int,
-    var characterId: Int,
+    var characterId: String,
     var rewardId: Int
 )

@@ -23,4 +23,14 @@
     <string name="main_menu">Main menu</string>
     <string name="attack">Attack</string>
     <string name="run_away">Run away</string>
+    <string name="you_have_no_suitable_equipment">You have no suitable equipment</string>
+    <string name="you_have_no_items_in_your_inventory_you_can_buy_items_in_the_shop">You have no items in your inventory, you can buy items in the shop !</string>
+    <string name="channel_name"> SitorChannel</string>
+    <string name="channel_description"> This is a channel for Sitor</string>
+    <string name="password">Password</string>
+    <string name="playername">Playername</string>
+    <string name="SitorName">SitorName</string>
+    <string name="SitorPass">SitorPass</string>
+    <string name="KeepLoggedIn">KeepLoggedIn</string>
+    <string name="claim_reward">Claim reward !</string>
 </resources>

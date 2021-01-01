@@ -4,15 +4,15 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class DatabasePlayer constructor(
+data class DatabasePlayer(
 
     @PrimaryKey(autoGenerate = true)
     val playerId: Int,
     val name: String?,
     val password: String?,
-    val characterId: Int,
+    var characterId: String,
     val coins: Long,
-    val inventoryId: Int,
+    val inventoryId: String,
     val statusPointsLeft: Int,
     val statusPointsAttack: Int,
     val statusPointsDefence: Int,

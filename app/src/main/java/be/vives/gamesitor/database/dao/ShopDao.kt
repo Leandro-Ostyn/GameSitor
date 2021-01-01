@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import be.vives.gamesitor.database.dbRelationships.crossRefs.ShopItemCrossRef
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.ShopItemCrossRef
 import be.vives.gamesitor.database.entities.DatabaseShop
 
 @Dao

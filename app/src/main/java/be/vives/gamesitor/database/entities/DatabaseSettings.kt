@@ -2,29 +2,16 @@ package be.vives.gamesitor.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import be.vives.gamesitor.models.Settings
+
 
 @Entity(tableName = "settings")
-data class DatabaseSettings constructor(
+data class DatabaseSettings(
 
     @PrimaryKey
     val settingId: Int,
-    val musicOn: Boolean,
-    val playerName: String,
-    val passWord: String,
-    val hideAnimations: Boolean,
-    val setNotification: Boolean
+    var musicOn: Boolean,
+    var playerName: String,
+    var passWord: String,
+    var hideAnimations: Boolean,
+    var setNotification: Boolean
 )
-
-fun List<DatabaseSettings>.asDomainModel(): List<Settings> {
-    return map {
-        Settings(
-            settingId = it.settingId,
-            musicOn = it.musicOn,
-            playerName = it.playerName,
-            passWord = it.passWord,
-            hideAnimations = it.hideAnimations,
-            setNotification = it.setNotification
-        )
-    }
-}

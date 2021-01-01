@@ -3,15 +3,14 @@ package be.vives.gamesitor.loading
 import android.app.Application
 import androidx.lifecycle.*
 import be.vives.gamesitor.constants.*
-import be.vives.gamesitor.database.dbRelationships.crossRefs.EquipmentItemsCrossRef
-import be.vives.gamesitor.database.dbRelationships.crossRefs.InventoryItemsCrossRef
-import be.vives.gamesitor.database.dbRelationships.crossRefs.TypeItemCrossRef
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.EquipmentItemsCrossRef
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.InventoryItemsCrossRef
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.TypeItemCrossRef
 import be.vives.gamesitor.database.entities.*
-import be.vives.gamesitor.database.getDatabase
-import be.vives.gamesitor.database.getRepository
 import be.vives.gamesitor.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 enum class SitorApiStatus { LOADING, ERROR, DONE }
 
@@ -38,11 +37,42 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
     val inventories: LiveData<List<Inventory>> get() = _inventories
     private val _player = repository.player
     val player: LiveData<Player> get() = _player
+    private val _settings = repository.settings
+    val settings: LiveData<DatabaseSettings> get() = _settings
+    private val _dbCharacters = repository.getCharacters()
+    val dbCharacters: LiveData<List<DatabaseCharacter>> get() = _dbCharacters
+    private val _registering = repository.registering
+    val registering: LiveData<Boolean> get() = _registering
 
     //Checking Status of Api Connection
     private val _status = MutableLiveData<SitorApiStatus>()
     val status: LiveData<SitorApiStatus>
         get() = _status
+
+    //Checks to make sure everything runs in the correct sequence.
+    private val _dbPlayerDone = MutableLiveData<Boolean>()
+    val dbPlayerDone: LiveData<Boolean> get() = _dbPlayerDone
+    private val _itemsAreSet = MutableLiveData<Boolean>()
+    val itemsAreSet: LiveData<Boolean> get() = _itemsAreSet
+    private val _rewardsAreSet = MutableLiveData<Boolean>()
+    val rewardsAreSet: LiveData<Boolean> get() = _rewardsAreSet
+    private val _equipmentsAreSet = MutableLiveData<Boolean>()
+    val equipmentsAreSet: LiveData<Boolean> get() = _equipmentsAreSet
+    private val _charactersAreSet = MutableLiveData<Boolean>()
+    val charactersAreSet: LiveData<Boolean> get() = _charactersAreSet
+    private val _stagesAreSet = MutableLiveData<Boolean>()
+    val stagesAreSet: LiveData<Boolean> get() = _stagesAreSet
+    private val _statsAreSet = MutableLiveData<Boolean>()
+    val statsAreSet: LiveData<Boolean> get() = _statsAreSet
+    private val _backgroundsAreSet = MutableLiveData<Boolean>()
+    val backgroundsAreSet: LiveData<Boolean> get() = _backgroundsAreSet
+    private val _equipmentUpdated = MutableLiveData<Boolean>()
+    val equipmentUpdated: LiveData<Boolean> get() = _equipmentUpdated
+    private val _equipmentIdMade = MutableLiveData<Boolean>()
+    val equipmentIdMade: LiveData<Boolean> get() = _equipmentIdMade
+    private val _domainPlayerIsSet = MutableLiveData<Boolean>()
+    val domainPlayerIsSet : LiveData<Boolean> get() = _domainPlayerIsSet
+
 
     private val _progress = MutableLiveData<Int>()
     val progress: LiveData<Int> = Transformations.map(status) {
@@ -53,8 +83,59 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         _progress.value = 0
+        _dbPlayerDone.value = false
+        _rewardsAreSet.value = false
+        _itemsAreSet.value = false
+        _equipmentsAreSet.value = false
+        _charactersAreSet.value = false
+        _statsAreSet.value = false
+        _stagesAreSet.value = false
+        _backgroundsAreSet.value = false
+        _equipmentUpdated.value = false
+        _equipmentIdMade.value = false
+        _domainPlayerIsSet.value= false
     }
 
+//private functions to make sure the sequence is correct
+
+    private fun rewardIsSet() {
+        _rewardsAreSet.postValue(true)
+    }
+
+    private fun itemsIsSet() {
+        _itemsAreSet.postValue(true)
+    }
+
+    private fun equipmentIsSet() {
+        _equipmentsAreSet.postValue(true)
+    }
+
+    private fun charactersIsSet() {
+        _charactersAreSet.postValue(true)
+    }
+
+    private fun statsIsSet() {
+        _statsAreSet.postValue(true)
+    }
+
+    private fun stagesIsSet() {
+        _stagesAreSet.postValue(true)
+    }
+
+    private fun backgroundIsSet() {
+        _backgroundsAreSet.postValue(true)
+    }
+
+    private fun equipmentIsUpdated() {
+        _equipmentUpdated.postValue(true)
+    }
+
+    private fun equipmentIdIsMade() {
+        _equipmentIdMade.postValue(true)
+    }
+    private fun domainPlayerIsMade(){
+        _domainPlayerIsSet.postValue(true)
+    }
 
     //Getting DB Data!!!
     @JvmName("getItems1")
@@ -112,9 +193,16 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
         return repository.getInventoriesItems()
     }
 
+    fun getSettingsByPlayerName(name: String): LiveData<DatabaseSettings> {
+        return repository.getSettingsByPlayerName(name)
+    }
+
     //Setting the DB Data to Domain Models
     fun setItems(itemList: List<Item>) {
-        viewModelScope.launch(Dispatchers.IO) { repository.setItems(itemList) }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setItems(itemList)
+            itemsIsSet()
+        }
     }
 
     fun setTypes(
@@ -144,6 +232,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                     image = it.image
                 )
             })
+            backgroundIsSet()
         }
     }
 
@@ -153,9 +242,11 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                 Reward(
                     rewardId = it.rewardId,
                     exp = it.exp,
-                    item = itemList.first { item -> item.itemId == it.itemId }
+                    item = itemList.first { item -> item.itemId == it.itemId },
+                    coins = it.coins
                 )
             })
+            rewardIsSet()
         }
     }
 
@@ -170,6 +261,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                     lifepoints = it.lifepoints
                 )
             })
+            statsIsSet()
         }
     }
 
@@ -197,6 +289,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                 )
             }
             repository.setEquipments(localEquipmentList)
+            equipmentIsSet()
         }
     }
 
@@ -224,6 +317,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                 )
             }
             repository.setCharacters(characterList)
+            charactersIsSet()
         }
     }
 
@@ -252,6 +346,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                 )
             }
             repository.setStages(stageList)
+            stagesIsSet()
         }
     }
 
@@ -302,7 +397,32 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                     EXP = dbPlayer.eXP
                 )
             )
+        domainPlayerIsMade()
         }
+    }
+
+    fun setSettings(settings: DatabaseSettings) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setSettings(settings)
+        }
+    }
+
+    fun createSettings(name: String, password: String) {
+        viewModelScope.launch {
+            val settings = DatabaseSettings(
+                settingId = 0,
+                hideAnimations = true,
+                musicOn = false,
+                playerName = name,
+                passWord = password,
+                setNotification = true
+            )
+            repository.createSettings(settings)
+        }
+    }
+
+    fun setDbPlayerInitializeDone() {
+        _dbPlayerDone.postValue(true)
     }
 
     //MappingFunctions from DB to Domain
@@ -337,7 +457,61 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
 
     //NetworkConnection
     fun setNetWorkConnection(value: Boolean) {
-        repository.setNetwork(value)
+        viewModelScope.launch(Dispatchers.IO) { repository.setNetwork(value) }
+    }
+
+
+    //1st login after Register Methods - > Create character,Stats,Equipment for Player
+
+    fun makeCharacterForPlayer(
+        dbPlayer: DatabasePlayer,
+        characterList: List<DatabaseCharacter>,
+        statsId: String,
+        equipmentId: String
+    ): MutableLiveData<String> {
+        val characterId = MutableLiveData<String>()
+        viewModelScope.launch(Dispatchers.IO) {
+            val characterForPlayer = characterList.first { character -> character.name == PLAYER }
+
+            characterId.postValue(
+                repository.makeCharacterForPlayer(
+                    dbPlayer,
+                    characterForPlayer,
+                    statsId,
+                    equipmentId
+                )
+            )
+        }
+        return characterId
+    }
+
+    fun createStatsForPlayerCharacter(): MutableLiveData<String> {
+        val inventoryId = MutableLiveData<String>()
+        viewModelScope.launch {
+            inventoryId.postValue(repository.createStatsForCharacter())
+        }
+        return inventoryId
+    }
+
+    fun makeEquipmentForPlayerCharacter(dbPlayer: DatabasePlayer): MutableLiveData<String> {
+        val equipmentId = MutableLiveData<String>()
+        viewModelScope.launch(Dispatchers.IO) {
+            val localEquipmentId = repository.makeEquipmentForPlayer(dbPlayer)
+            equipmentId.postValue(localEquipmentId)
+            equipmentIdIsMade()
+        }
+        return equipmentId
+    }
+
+    fun updateEquipmentForPlayerCharacter(characterId: String, equipmentId: String) {
+        viewModelScope.launch {
+            repository.updateEquipmentForPlayerCharacter(characterId, equipmentId)
+            equipmentIsUpdated()
+        }
+    }
+
+    fun stopRegistering() {
+        viewModelScope.launch(Dispatchers.IO) { repository.stopRegistering() }
     }
 
     //Getting All api resources

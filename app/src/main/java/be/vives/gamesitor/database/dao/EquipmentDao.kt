@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import be.vives.gamesitor.database.dbRelationships.crossRefs.EquipmentItemsCrossRef
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.EquipmentItemsCrossRef
 import be.vives.gamesitor.database.entities.DatabaseEquipment
 
 @Dao
@@ -29,4 +29,10 @@ interface EquipmentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCrossReff(vararg equipmentItems: EquipmentItemsCrossRef)
+
+    @Query("delete from equipmentitemscrossref where itemId = :itemId and equipmentId= :equipmentId")
+    fun removeCrossReff(itemId: Int, equipmentId: String)
+
+    @Query("Update databaseequipment set characterId = :characterId where equipmentId = :equipmentId")
+    fun updateCharacterIdInEquipment(characterId: String,equipmentId: String)
 }

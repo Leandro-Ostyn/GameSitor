@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class DatabaseEquipment (
     @PrimaryKey
-    var equipmentId :Int,
+    var equipmentId :String,
     var name : String,
-    var characterId : Int,
+    var characterId : String,
 )

@@ -15,6 +15,17 @@
         android:layout_height="match_parent"
         android:background="@drawable/equipmentbackground">
 
+        <TextView
+            android:id="@+id/lblInventory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_have_no_items_in_your_inventory_you_can_buy_items_in_the_shop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RVInventory"
             android:layout_width="match_parent"
@@ -27,7 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.497"
-            app:listData="@{viewmodel.items}"
+            app:listData="@{viewmodel.player.inventory.items}"
             app:spanCount="7"
             tools:itemCount="20"
             tools:listitem="@layout/grid_view_item" />
@@ -36,7 +47,7 @@
             android:id="@+id/btnMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Main Menu"
+            android:text="@string/main_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/RVInventory"
             app:layout_constraintHorizontal_bias="0.443"

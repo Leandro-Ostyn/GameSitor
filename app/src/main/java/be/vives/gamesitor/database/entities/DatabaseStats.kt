@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class DatabaseStats(
-    @PrimaryKey
-    var statsId: Int,
+@PrimaryKey
+    var statsId: String,
     var lifepoints: Int,
     var attack: Int,
     var strength: Int,

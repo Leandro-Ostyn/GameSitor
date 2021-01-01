@@ -1,4 +1,4 @@
-package be.vives.gamesitor.database.dbRelationships.crossRefs
+package be.vives.gamesitor.database.entities.dbRelationships.crossRefs
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class EquipmentItemsCrossRef(
     @PrimaryKey(autoGenerate = true)
     val equipmentItemsId: Int,
-    val equipmentId: Int,
+    val equipmentId: String,
     val itemId: Int
 )

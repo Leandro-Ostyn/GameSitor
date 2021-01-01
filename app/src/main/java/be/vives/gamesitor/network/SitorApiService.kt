@@ -1,6 +1,6 @@
 package be.vives.gamesitor.network
 
-import be.vives.gamesitor.database.dbRelationships.crossRefs.*
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.*
 import be.vives.gamesitor.database.entities.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi

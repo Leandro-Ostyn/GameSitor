@@ -1,19 +1,18 @@
 package be.vives.gamesitor.inventory
 
-import PhotoGridAdapter
+import be.vives.gamesitor.adapters.PhotoGridAdapter
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
+import be.vives.gamesitor.constants.SELL
 import be.vives.gamesitor.databinding.InventoryFragmentBinding
-import be.vives.gamesitor.detail.SELL
-import timber.log.Timber
+
 
 
 class InventoryFragment : Fragment() {
@@ -31,7 +30,7 @@ class InventoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.inventory_fragment, container, false)
         binding.lifecycleOwner = this
@@ -41,18 +40,7 @@ class InventoryFragment : Fragment() {
             PhotoGridAdapter(PhotoGridAdapter.OnClickListener {
                 inventoryViewModel.displayItemDetails(it)
             })
-        inventoryViewModel.player.value?.let { databasePlayer ->
-            inventoryViewModel.getItemsFromInventoryId(databasePlayer.inventoryId)
-                .observe(viewLifecycleOwner, {
-                    if (it != null)
-                        inventoryViewModel.itemAsDomainModel(it).observe(viewLifecycleOwner, {
-                            if (it != null) {
-                                inventoryViewModel.setItems(it)
-                            }
-                        })
-                }
-                )
-        }
+
         inventoryViewModel.navigateToSelectedItem.observe(viewLifecycleOwner,
             {
                 it?.let {
@@ -64,6 +52,9 @@ class InventoryFragment : Fragment() {
                     inventoryViewModel.displayItemDetailsComplete()
                 }
             })
+        binding.btnMain.setOnClickListener{
+            findNavController().navigate(InventoryFragmentDirections.actionBagFragmentToMainGameFragment())
+        }
 
 
         return binding.root

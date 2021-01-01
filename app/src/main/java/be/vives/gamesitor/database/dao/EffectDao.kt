@@ -18,8 +18,4 @@ interface EffectDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg effects: DatabaseEffect)
-
-//    @Query("select i.itemId,  e.effectId, e.attribute, e.value from databaseitem i left join itemeffectcrossref ie on ie.itemId = i.itemId left join databaseeffect e on e.effectId=ie.effectId ")
-//    fun geteffectsFromItems() : LiveData<List<testClass>>
-
 }

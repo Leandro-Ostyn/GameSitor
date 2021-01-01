@@ -1,4 +1,4 @@
-package be.vives.gamesitor.database.dbRelationships.crossRefs
+package be.vives.gamesitor.database.entities.dbRelationships.crossRefs
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

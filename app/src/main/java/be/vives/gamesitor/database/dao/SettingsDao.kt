@@ -11,7 +11,10 @@ import be.vives.gamesitor.database.entities.DatabaseSettings
 interface SettingsDao {
 
     @Query("select * from settings")
-    fun getVideos(): LiveData<List<DatabaseSettings>>
+    fun getSettings(): LiveData<List<DatabaseSettings>>
+
+    @Query("Select * from settings where playerName = :playerName")
+    fun getSettingsByPlayerName(playerName: String) : LiveData<DatabaseSettings>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg settings: DatabaseSettings)

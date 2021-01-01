@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_stageFragment_to_mainGameFragment"
             app:destination="@id/mainGameFragment" />
+        <action
+            android:id="@+id/action_stageFragment_to_stageResultFragment"
+            app:destination="@id/stageResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewHeroFragment"
@@ -83,7 +86,8 @@
         tools:layout="@layout/settings_fragment" >
         <action
             android:id="@+id/action_settingsFragment_to_mainGameFragment"
-            app:destination="@id/mainGameFragment" />
+            app:destination="@id/mainGameFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -140,5 +144,22 @@
         <argument
             android:name="type"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/stageResultFragment"
+        android:name="be.vives.gamesitor.stageResult.StageResultFragment"
+        android:label="stage_result_fragment"
+        tools:layout="@layout/stage_result_fragment" >
+        <argument
+            android:name="rewardId"
+            app:argType="integer" />
+        <argument
+            android:name="StageWon"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_stageResultFragment_to_mainGameFragment"
+            app:destination="@id/mainGameFragment"
+            app:popUpTo="@id/mainGameFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -1,5 +1,6 @@
 package be.vives.gamesitor.equipment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +15,9 @@ import be.vives.gamesitor.constants.*
 import be.vives.gamesitor.databinding.ViewHeroFragmentBinding
 import be.vives.gamesitor.models.Item
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_login.*
 import timber.log.Timber
+import java.util.*
 
 
 class ViewHeroFragment : Fragment() {
@@ -36,7 +39,6 @@ class ViewHeroFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.view_hero_fragment, container, false)
         binding.lifecycleOwner = this
-
         createItemListForType(WEAPON)
         createItemListForType(H2WEAPON)
         createItemListForType(BODY)
@@ -45,19 +47,13 @@ class ViewHeroFragment : Fragment() {
         createItemListForType(LEGS)
         createItemListForType(BOOTS)
         binding.btnWeapon.setOnClickListener() {
-            createItemListForType(WEAPON)
             viewHeroViewModel.weaponList.observe(viewLifecycleOwner, {
                 if (it != null) {
-                    findNavController().navigate(
-                        ViewHeroFragmentDirections.actionViewHeroFragmentToEquipmentListFragment(
-                            WEAPON
-                        )
-                    )
+                            showWeaponPrompt("choose your weapon", "in this prompt you can choose what kind of weapons u want to equip")
                 }
             })
         }
         binding.btnBody.setOnClickListener() {
-            createItemListForType(BODY)
             viewHeroViewModel.bodyList.observe(viewLifecycleOwner, {
                 if (it != null) {
                     findNavController().navigate(
@@ -69,7 +65,6 @@ class ViewHeroFragment : Fragment() {
             })
         }
         binding.btnHelmet.setOnClickListener() {
-            createItemListForType(HELMET)
             viewHeroViewModel.helmetList.observe(viewLifecycleOwner, {
                 if (it != null) {
                     findNavController().navigate(
@@ -81,7 +76,6 @@ class ViewHeroFragment : Fragment() {
             })
         }
         binding.btnShield.setOnClickListener() {
-            createItemListForType(SHIELD)
             viewHeroViewModel.shieldList.observe(viewLifecycleOwner, {
                 if (it != null) {
                     findNavController().navigate(
@@ -93,7 +87,6 @@ class ViewHeroFragment : Fragment() {
             })
         }
         binding.btnLegs.setOnClickListener() {
-            createItemListForType(LEGS)
             viewHeroViewModel.legsList.observe(viewLifecycleOwner, {
                 if (it != null) {
                     findNavController().navigate(
@@ -105,7 +98,6 @@ class ViewHeroFragment : Fragment() {
             })
         }
         binding.btnBoots.setOnClickListener() {
-            createItemListForType(BOOTS)
             viewHeroViewModel.bootsList.observe(viewLifecycleOwner, {
                 if (it != null) {
                     findNavController().navigate(
@@ -119,106 +111,92 @@ class ViewHeroFragment : Fragment() {
         binding.btnMainMenuHero.setOnClickListener() {
             findNavController().navigate(ViewHeroFragmentDirections.actionViewHeroFragmentToMainGameFragment())
         }
-        viewHeroViewModel.player.observe(viewLifecycleOwner, { databasePlayer ->
-            if (databasePlayer != null) {
-                viewHeroViewModel.getCrossRefEquipmentItems(databasePlayer.characterId)
-                    .observe(viewLifecycleOwner, { equipmentItemsCrossRef ->
-                        if (equipmentItemsCrossRef != null) {
-                            viewHeroViewModel.getItemListForChosenList(
-                                viewHeroViewModel.getItemIdsFromCrossReffEquipment(
-                                    equipmentItemsCrossRef
-                                )
-                            ).observe(viewLifecycleOwner, {
-                                if (it != null) {
-                                    viewHeroViewModel.setEquippedItems(it)
-                                }
-                            })
 
-                        }
+        viewHeroViewModel.apply {
+            player.observe(viewLifecycleOwner, {player ->
+                if (player != null) {
+                    Glide.with(binding.imgHero.context).load(player.character.image)
+                        .into(binding.imgHero)
+                    weapon2HList.observe(viewLifecycleOwner, {
+                        showEquippedItem(player.character.equipment.items, it, binding.btnWeapon)
                     })
-            }
-        })
-
-        viewHeroViewModel.equippedItems.observe(viewLifecycleOwner, { itemList ->
-            if (itemList != null) {
-                viewHeroViewModel.weapon2HList.observe(viewLifecycleOwner, {
-                    showEquippedItems(itemList, it, binding.btnWeapon)
-                })
-                viewHeroViewModel.weaponList.observe(viewLifecycleOwner, {
-                    showEquippedItems(itemList, it, binding.btnWeapon)
-                })
-                viewHeroViewModel.helmetList.observe(viewLifecycleOwner, {
-                    showEquippedItems(itemList, it, binding.btnHelmet)
-                })
-                viewHeroViewModel.bodyList.observe(viewLifecycleOwner, {
-                    showEquippedItems(itemList, it, binding.btnBody)
-                })
-                viewHeroViewModel.shieldList.observe(viewLifecycleOwner, {
-                    showEquippedItems(itemList, it, binding.btnShield)
-                })
-                viewHeroViewModel.legsList.observe(viewLifecycleOwner, {
-                    showEquippedItems(itemList, it, binding.btnLegs)
-                })
-                viewHeroViewModel.bootsList.observe(viewLifecycleOwner, {
-                    showEquippedItems(itemList, it, binding.btnBoots)
-                })
-            }
-        })
+                    weaponList.observe(viewLifecycleOwner, {
+                        showEquippedItem(player.character.equipment.items, it, binding.btnWeapon)
+                    })
+                    helmetList.observe(viewLifecycleOwner, {
+                        showEquippedItem(player.character.equipment.items, it, binding.btnHelmet)
+                    })
+                    bodyList.observe(viewLifecycleOwner, {
+                        showEquippedItem(player.character.equipment.items, it, binding.btnBody)
+                    })
+                    shieldList.observe(viewLifecycleOwner, {
+                        showEquippedItem(player.character.equipment.items, it, binding.btnShield)
+                    })
+                    legsList.observe(viewLifecycleOwner, {
+                        showEquippedItem(player.character.equipment.items, it, binding.btnLegs)
+                    })
+                    bootsList.observe(viewLifecycleOwner, {
+                        showEquippedItem(player.character.equipment.items, it, binding.btnBoots)
+                    })
+                }
+            })
+        }
         return binding.root
     }
 
-    private fun showEquippedItems(
+    private fun showEquippedItem(
         equippedItemList: List<Item>,
         equipmentItems: List<Item>,
         imageView: ImageView
     ) {
-        if (equipmentItems != null) {
-            for (item in equipmentItems) {
-                for (equippedItem in equippedItemList) {
-                    if (equippedItem.itemId == item.itemId) {
-                        Glide.with(imageView.context).load(equippedItem.image)
-                            .centerCrop()
-                            .into(imageView)
-                    }
+        for (item in equipmentItems) {
+            for (equippedItem in equippedItemList) {
+                if (equippedItem.itemId == item.itemId) {
+                    Glide.with(imageView.context).load(equippedItem.image)
+                        .into(imageView)
                 }
             }
         }
     }
 
     private fun createItemListForType(type: String) {
-        viewHeroViewModel.getType(type).observe(viewLifecycleOwner, { databaseType ->
-            if (databaseType != null) {
-                Timber.i(databaseType.type)
-                viewHeroViewModel.getItemCrossRefInType(databaseType.typeId)
-                    .observe(viewLifecycleOwner, {
-                        Timber.i(it.toString())
-                        if (it != null) {
-                            val itemIds = viewHeroViewModel.getItemIdsFromCrossreff(it)
-                            viewHeroViewModel.getItemListForChosenList(itemIds)
-                                .observe(viewLifecycleOwner, { itemList ->
-                                    Timber.i(itemList.toString())
-                                    if (itemList != null) {
-                                        viewHeroViewModel.inventoryList.observe(
-                                            viewLifecycleOwner,
-                                            { inventoryList ->
-                                                if (inventoryList != null) {
-                                                    Timber.i(inventoryList.toString())
-                                                    val inventoryItemListFilteredOnType =
-                                                        viewHeroViewModel.checkInventoryItemsOnChosenType(
-                                                            inventoryList,
-                                                            itemIds
-                                                        )
-                                                    viewHeroViewModel.setFilteredListForBagEquipment(
-                                                        inventoryItemListFilteredOnType, type
-                                                    )
-                                                    Timber.i("completed the list Insert")
-                                                }
-                                            })
-                                    }
-                                })
+        viewHeroViewModel.apply {
+            player.observe(viewLifecycleOwner, { player ->
+                if (player != null) {
+                    types.observe(viewLifecycleOwner, { types ->
+                        if (types != null) {
+                            setEquipmentListForType(
+                                checkInventoryItemsOnChosenType(
+                                    player.inventory.items,
+                                    types.first { filterType -> filterType.type == type }), type
+                            )
                         }
                     })
-            }
-        })
+                }
+            })
+        }
     }
+
+    private fun showWeaponPrompt(title: String, message: String) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setCancelable(true)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton(
+            "Weapons"
+        ) { _, _ ->
+            findNavController().navigate(
+                ViewHeroFragmentDirections.actionViewHeroFragmentToEquipmentListFragment( WEAPON))
+            }
+            builder.setNegativeButton(
+               "2H Weapons"
+            ) { _, _ ->
+                findNavController().navigate(
+                    ViewHeroFragmentDirections.actionViewHeroFragmentToEquipmentListFragment( H2WEAPON))
+            }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
 }
+

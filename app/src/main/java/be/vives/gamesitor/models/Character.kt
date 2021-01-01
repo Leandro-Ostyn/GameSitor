@@ -1,13 +1,11 @@
 package be.vives.gamesitor.models
 
-import androidx.room.Embedded
-
 data class Character(
-    val characterId: Int,
-    val name: String?,
-    val exp: Long,
+    val characterId: String,
+    val name: String,
+    var exp: Long,
     val IsHero: Boolean,
-    val image: String?,
+    val image: String,
     val stats: Stats,
     val equipment: Equipment
 

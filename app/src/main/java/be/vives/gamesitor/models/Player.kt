@@ -14,5 +14,5 @@ data class Player(
     val statusPointsDefence: Int,
     val statusPointsStrength: Int,
     val statusPointsHitpoints: Int,
-    val EXP: Long
+    var EXP: Long
 )

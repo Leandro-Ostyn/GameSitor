@@ -2,16 +2,16 @@ package be.vives.gamesitor.shop
 
 import android.app.Application
 import androidx.lifecycle.*
-import be.vives.gamesitor.database.entities.DatabasePlayer
-import be.vives.gamesitor.database.getDatabase
-import be.vives.gamesitor.database.getRepository
+import be.vives.gamesitor.constants.getDatabase
+import be.vives.gamesitor.constants.getRepository
 import be.vives.gamesitor.models.Item
+import be.vives.gamesitor.models.Player
 
 open class ShopViewmodel(application: Application) : AndroidViewModel(application) {
     private val database = getDatabase(application)
     private val repository = getRepository(database)
-    private val _player = repository.dbPlayer
-    val player: LiveData<DatabasePlayer> get() = _player
+    private val _player = repository.player
+    val player: LiveData<Player> get() = _player
     private val _items = repository.items
     val items: LiveData<List<Item>> get() = _items
 
@@ -27,6 +27,7 @@ open class ShopViewmodel(application: Application) : AndroidViewModel(applicatio
     fun displayItemDetailsComplete() {
         _navigateToSelectedItem.value = null
     }
+
 
 
     class ShopViewmodelFactory(val app: Application) : ViewModelProvider.Factory {

@@ -18,5 +18,5 @@ interface StatsDao {
     fun getStats(statsId : Int): LiveData<DatabaseStats>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg stats: DatabaseStats)
+    fun insertAll(vararg stats: DatabaseStats) : List<Long>
 }

@@ -8,5 +8,6 @@ data class DatabaseReward(
     @PrimaryKey
     var rewardId: Int,
     var itemId: Int,
-    var exp: Long
+    var exp: Long,
+    var coins :Long
 )

@@ -2,15 +2,16 @@ package be.vives.gamesitor.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import be.vives.gamesitor.database.GameSitorDatabase
+import be.vives.gamesitor.database.SitorDatabase
 import be.vives.gamesitor.database.entities.DatabaseInventory
 import be.vives.gamesitor.database.entities.DatabasePlayer
-import be.vives.gamesitor.models.Inventory
+import be.vives.gamesitor.database.entities.DatabaseStats
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
-class LoginRepository(private val database: GameSitorDatabase) {
+class LoginRepository(private val database: SitorDatabase) {
 
     private val _loggedIn = MutableLiveData<DatabasePlayer>()
     val loggedIn: LiveData<DatabasePlayer> get() = _loggedIn
@@ -34,23 +35,25 @@ class LoginRepository(private val database: GameSitorDatabase) {
         }
     }
 
-    suspend fun createInventory(): List<Long> {
+    suspend fun createInventory(): String {
         return withContext(Dispatchers.IO) {
-            return@withContext database.inventoryDao.insertAll(
+       val inventoryId=     UUID.randomUUID().toString()
+            database.inventoryDao.insertAll(
                 DatabaseInventory(
-                    inventoryId = 0,
+                    inventoryId = inventoryId,
                     name = "PlayerInventory"
                 )
             )
+            return@withContext inventoryId
         }
 
     }
 
-    suspend fun register(username: String, password: String, inventoryId: Int) {
+    suspend fun register(username: String, password: String, inventoryId: String) {
         withContext(Dispatchers.IO) {
             val player = DatabasePlayer(
                 playerId = 0,
-                characterId = 11,
+                characterId = "0",
                 coins = 500L,
                 eXP = 0L,
                 inventoryId = inventoryId,

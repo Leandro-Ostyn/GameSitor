@@ -3,25 +3,20 @@ package be.vives.gamesitor.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import be.vives.gamesitor.constants.*
-import be.vives.gamesitor.database.GameSitorDatabase
-import be.vives.gamesitor.database.dbRelationships.crossRefs.EquipmentItemsCrossRef
-import be.vives.gamesitor.database.dbRelationships.crossRefs.InventoryItemsCrossRef
-import be.vives.gamesitor.database.dbRelationships.crossRefs.TypeItemCrossRef
+import be.vives.gamesitor.database.SitorDatabase
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.EquipmentItemsCrossRef
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.InventoryItemsCrossRef
+import be.vives.gamesitor.database.entities.dbRelationships.crossRefs.TypeItemCrossRef
 import be.vives.gamesitor.database.entities.*
 import be.vives.gamesitor.models.*
 import be.vives.gamesitor.network.SitorApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.util.*
 
 
-class Repository(private val database: GameSitorDatabase) {
-    private val _networkConnection = MutableLiveData<Boolean>()
-    val networkConnection: LiveData<Boolean> get() = _networkConnection
-    private val _chosenItem = MutableLiveData<Item>()
-    val chosenItem: LiveData<Item> get() = _chosenItem
-    private val _inventoryItems = MutableLiveData<List<Item>>()
-    val inventoryItems: LiveData<List<Item>> get() = _inventoryItems
+class Repository(private val database: SitorDatabase) {
     private val _playerWeaponList = MutableLiveData<List<Item>>()
     val playerWeaponList: LiveData<List<Item>> get() = _playerWeaponList
     private val _player2HWeaponList = MutableLiveData<List<Item>>()
@@ -36,13 +31,11 @@ class Repository(private val database: GameSitorDatabase) {
     val playerShieldList: LiveData<List<Item>> get() = _playerShieldList
     private val _playerBootsList = MutableLiveData<List<Item>>()
     val playerBootsList: LiveData<List<Item>> get() = _playerBootsList
-    private val _equippedItems = MutableLiveData<List<Item>>()
-    val equippedItems: LiveData<List<Item>> get() = _equippedItems
-    private val _characterFromPlayer = MutableLiveData<Character>()
-    val characterFromPlayer: LiveData<Character> get() = _characterFromPlayer
-
     private val _dbPlayer = MutableLiveData<DatabasePlayer>()
     val dbPlayer: LiveData<DatabasePlayer> get() = _dbPlayer
+
+    private val _registering = MutableLiveData<Boolean>()
+    val registering: LiveData<Boolean> get() = _registering
 
 
     //Everything for loading Screen Variables :
@@ -67,10 +60,17 @@ class Repository(private val database: GameSitorDatabase) {
     val inventories: LiveData<List<Inventory>> get() = _inventories
     private val _player = MutableLiveData<Player>()
     val player: LiveData<Player> get() = _player
+    private val _networkConnection = MutableLiveData<Boolean>()
+    val networkConnection: LiveData<Boolean> get() = _networkConnection
+    private val _settings = MutableLiveData<DatabaseSettings>()
+    val settings: LiveData<DatabaseSettings> get() = _settings
 
 
     //Everything for Loading screen to Fill All variables.
 
+    init {
+        _registering.value=false
+    }
 
     //Getters From Db
     @JvmName("getItems1")
@@ -88,7 +88,6 @@ class Repository(private val database: GameSitorDatabase) {
     }
 
     fun getChosenItem(itemId: Int): LiveData<Item> {
-        _chosenItem.postValue(database.itemDao.getItemsWithEffects(itemId).value)
         return database.itemDao.getItemsWithEffects(itemId)
 
     }
@@ -139,8 +138,12 @@ class Repository(private val database: GameSitorDatabase) {
     fun getPlayer(name: String): LiveData<DatabasePlayer> {
         return database.playerDao.getPlayerByUserName(name)
     }
-    //Setters to map from db to Domain Models.
 
+    fun getSettingsByPlayerName(name: String): LiveData<DatabaseSettings> {
+        return database.settingsDao.getSettingsByPlayerName(name)
+    }
+
+    //Setters to map from db to Domain Models.
     suspend fun setItems(itemList: List<Item>) {
         withContext(Dispatchers.IO) {
             _items.postValue(itemList)
@@ -202,137 +205,219 @@ class Repository(private val database: GameSitorDatabase) {
         }
     }
 
-
-    //Methods to set everything for Player
     suspend fun setDbPlayer(databasePlayer: DatabasePlayer) {
         withContext(Dispatchers.IO) { _dbPlayer.postValue(databasePlayer) }
     }
 
-    fun setPlayerItems(items: List<Item>) {
-        _inventoryItems.postValue(items)
+    suspend fun setSettings(settings: DatabaseSettings) {
+        withContext(Dispatchers.IO) { _settings.postValue(settings) }
     }
 
-    fun returnChosenEquipmentList(type: String): MutableLiveData<List<Item>> {
+    suspend fun setRegistering() {
+        withContext(Dispatchers.IO) {
+            _registering.postValue(true)
+        }
+    }
+
+    suspend fun createSettings(settings: DatabaseSettings) {
+        withContext(Dispatchers.IO) {
+            _settings.postValue(settings)
+            database.settingsDao.insertAll(settings)
+        }
+    }
+
+    //Functions To update the liveData Models
+    suspend fun removeEquippedItem(equipmentId: String, itemId: Int) {
+        withContext(Dispatchers.IO) { database.equipmentDao.removeCrossReff(itemId, equipmentId) }
+    }
+
+
+    fun returnChosenEquipmentList(type: String): LiveData<List<Item>> {
         return when (type) {
-            WEAPON -> _playerWeaponList
-            H2WEAPON -> _player2HWeaponList
-            HELMET -> _playerHelmetList
-            BODY -> _playerBodyList
-            LEGS -> _playerLegsList
-            SHIELD -> _playerShieldList
+            WEAPON -> playerWeaponList
+            H2WEAPON -> player2HWeaponList
+            HELMET -> playerHelmetList
+            BODY -> playerBodyList
+            LEGS -> playerLegsList
+            SHIELD -> playerShieldList
             else -> {
-                _playerBootsList
+                playerBootsList
             }
         }
 
     }
 
-
-//everything for inventory
-
-    fun getInventoryCrossReff(inventoryId: Int): LiveData<List<InventoryItemsCrossRef>> {
-        return database.inventoryDao.getCrossReffInventoryItems(inventoryId)
-
-    }
-
-    fun getFilteredItems(list: List<Int>): LiveData<List<Item>> {
-        return database.itemDao.getFilteredItemsWithEffects(list)
-    }
-
-    fun setNetwork(value: Boolean) {
-        _networkConnection.value = value
-    }
-
-    fun setStageList(stageList: List<Stage>) {
-        _stages.postValue(stageList)
-    }
-
-    suspend fun insertItemToInventory(itemId: Int, inventoryId: Int) {
+    suspend fun insertItemToInventory(itemId: Int, player: Player) {
         withContext(Dispatchers.IO) {
-            database.inventoryDao.insertCrossReff(itemId, inventoryId)
+            database.playerDao.updatePlayerCash(player.coins, player.playerId)
+            database.inventoryDao.insertCrossReff(itemId, player.inventory.inventoryId)
         }
     }
 
-    suspend fun deleteItemFromInventory(inventoryId: Int, itemId: Int) {
+    suspend fun deleteItemFromInventory(player: Player, itemId: Int) {
         withContext(Dispatchers.IO) {
-            database.inventoryDao.deleteCrossReff(inventoryId, itemId)
+            database.playerDao.updatePlayerCash(player.coins, player.playerId)
+            database.inventoryDao.deleteCrossReff(player.inventory.inventoryId, itemId)
+        }
+    }
+
+    suspend fun setFilteredListForEquipment(itemList: List<Item>, type: String) {
+        withContext(Dispatchers.IO) {
+            when (type) {
+                WEAPON -> _playerWeaponList.postValue(itemList)
+                H2WEAPON -> _player2HWeaponList.postValue(itemList)
+                HELMET -> _playerHelmetList.postValue(itemList)
+                BODY -> _playerBodyList.postValue(itemList)
+                LEGS -> _playerLegsList.postValue(itemList)
+                SHIELD -> _playerShieldList.postValue(itemList)
+                BOOTS -> _playerBootsList.postValue(itemList)
+            }
         }
     }
 
 
-    //Everything For Equipment
-    fun getTypeIdFromName(type: String): LiveData<DatabaseType> {
-        return database.typeDao.getTypeByName(type)
-    }
-
-    fun getItemIdsInType(typeId: Int): LiveData<List<TypeItemCrossRef>> {
-        return database.typeDao.getItemsByCrossRefWithType(typeId)
-    }
-
-    fun getEquipmentId(characterId: Int): LiveData<DatabaseEquipment> {
-        return database.equipmentDao.getEquipmentFromCharacter(characterId)
-    }
-
-    fun setFilteredListForEquipment(itemList: List<Item>, type: String) {
-        when (type) {
-            WEAPON -> _playerWeaponList.postValue(itemList)
-            H2WEAPON -> _player2HWeaponList.postValue(itemList)
-            HELMET -> _playerHelmetList.postValue(itemList)
-            BODY -> _playerBodyList.postValue(itemList)
-            LEGS -> _playerLegsList.postValue(itemList)
-            SHIELD -> _playerShieldList.postValue(itemList)
-            BOOTS -> _playerBootsList.postValue(itemList)
-        }
-    }
-
-    fun getCrossRefEquipmentItems(equipmentId: Int): LiveData<List<EquipmentItemsCrossRef>> {
-        return database.equipmentDao.getItemsFromEquipment(equipmentId)
-
-    }
-
-    suspend fun setEquippedItems(equippedItems: List<Item>) {
+    suspend fun equipToPlayer(itemId: Int, player: Player) {
         withContext(Dispatchers.IO) {
-            _equippedItems.postValue(equippedItems)
-        }
-    }
-
-    suspend fun equipToPlayer(equipmentId: Int, itemId: Int) {
-        val crossref = EquipmentItemsCrossRef(0, equipmentId = equipmentId, itemId = itemId)
-        withContext(Dispatchers.IO) {
+            val crossref = EquipmentItemsCrossRef(
+                0,
+                equipmentId = player.character.equipment.equipmentId,
+                itemId = itemId
+            )
+            //  _player.postValue(player)
             database.equipmentDao.insertCrossReff(crossref)
         }
     }
 
-//everything for Stage
 
-    fun getDatabaseStage(stageId: Int): LiveData<DatabaseStage> {
-        return database.stageDao.getStageById(stageId)
+    suspend fun deleteItemFromEquipment(item: Item, player: Player) {
+        withContext(Dispatchers.IO) {
+            database.equipmentDao.removeCrossReff(
+                item.itemId,
+                player.character.equipment.equipmentId
+            )
+        }
     }
 
-    fun getDatabaseStages(): LiveData<List<DatabaseStage>> {
-        return database.stageDao.getStages()
+    suspend fun setNetwork(value: Boolean) {
+        withContext(Dispatchers.IO) {
+            _networkConnection.postValue(value)
+        }
+    }
+
+    suspend fun updateSettings(settings: DatabaseSettings) {
+        withContext(Dispatchers.IO) {
+            database.settingsDao.insertAll(settings)
+        }
+    }
+
+    suspend fun updatePlayer(player: Player) {
+        withContext(Dispatchers.IO) {
+            database.playerDao.updatePlayerNameAndPass(
+                player.name,
+                player.password,
+                player.playerId
+            )
+        }
+    }
+
+    suspend fun insertRewardToPlayer(player: Player, item: Item?) {
+        withContext(Dispatchers.IO) {
+            _player.postValue(player)
+            database.playerDao.updateExpAndCoins(player.EXP, player.coins, player.playerId)
+            database.characterDao.updateExpFromCharacter(
+                player.character.exp,
+                player.character.characterId
+            )
+            if (item != null) {
+                database.inventoryDao.insertCrossReff(item.itemId, player.inventory.inventoryId)
+            }
+        }
     }
 
 
-    fun getBackgroundById(backgroundId: Int): LiveData<DatabaseBackground> {
-        return database.backgroundDao.getBackgroundById(backgroundId)
+    //Functions to Link Character , Stats, Equipment with Player with 1st Login
+
+
+    suspend fun makeCharacterForPlayer(
+        dbPlayer: DatabasePlayer,
+        character: DatabaseCharacter,
+        statsId: String,
+        equipmentId: String
+    ): String {
+        return withContext(Dispatchers.IO) {
+            val characterId = UUID.randomUUID().toString()
+            val characterForPlayer = DatabaseCharacter(
+                characterId = characterId,
+                exp = character.exp,
+                image = character.image,
+                equipmentId = equipmentId,
+                isHero = character.isHero,
+                name = character.name,
+                statsId = statsId
+            )
+            _dbPlayer.postValue(
+                DatabasePlayer(
+                    playerId = dbPlayer.playerId,
+                    name = dbPlayer.name,
+                    password = dbPlayer.password,
+                    characterId = characterId,
+                    coins = dbPlayer.coins,
+                    eXP = dbPlayer.eXP,
+                    inventoryId = dbPlayer.inventoryId,
+                    statusPointsLeft = dbPlayer.statusPointsLeft,
+                    statusPointsAttack = dbPlayer.statusPointsAttack,
+                    statusPointsDefence = dbPlayer.statusPointsDefence,
+                    statusPointsStrength = dbPlayer.statusPointsStrength,
+                    statusPointsHitpoints = dbPlayer.statusPointsHitpoints
+                )
+            )
+            database.characterDao.insertAll(characterForPlayer)
+            database.playerDao.updatePlayerCharacter(characterId, dbPlayer.playerId)
+            return@withContext characterId
+        }
     }
 
-    fun getRewardFromStage(rewardId: Int): LiveData<DatabaseReward> {
-        return database.rewardDao.getReward(rewardId)
+    suspend fun createStatsForCharacter(): String {
+        return withContext(Dispatchers.IO) {
+            val statsid = UUID.randomUUID().toString()
+            database.statsDao.insertAll(
+                DatabaseStats(
+                    statsId = statsid,
+                    attack = 1,
+                    strength = 1,
+                    defence = 1,
+                    lifepoints = 10
+                )
+            )
+            return@withContext statsid
+        }
+
     }
 
-    fun getDatabaseCharacter(characterId: Int): LiveData<DatabaseCharacter> {
-        return database.characterDao.getCharacterById(characterId)
+    suspend fun makeEquipmentForPlayer(dbPlayer: DatabasePlayer): String {
+        return withContext(Dispatchers.IO) {
+            val equipmentId = UUID.randomUUID().toString()
+            val dbEquipment = DatabaseEquipment(
+                equipmentId,
+                characterId = dbPlayer.characterId,
+                name = dbPlayer.name!!
+            )
+            database.equipmentDao.insertAll(dbEquipment)
+            return@withContext equipmentId
+        }
     }
 
-    fun getStatsById(statsId: Int): LiveData<DatabaseStats> {
-        return database.statsDao.getStats(statsId)
+    suspend fun updateEquipmentForPlayerCharacter(characterId: String, equipmentId: String) {
+        withContext(Dispatchers.IO) {
+            database.equipmentDao.updateCharacterIdInEquipment(characterId, equipmentId)
+        }
     }
 
-
-
-
+    suspend fun stopRegistering(){
+        withContext(Dispatchers.IO){
+            _registering.postValue(false)
+        }
+    }
 //-------------------------------------------------------------------------API SECTION -----------------------------------------------------------------------------------------------------------
 //Fetching  From Api, mapping to DatabaseModel
 

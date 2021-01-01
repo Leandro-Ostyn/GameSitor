@@ -1,8 +1,6 @@
-package sitorApplication
+package logging
 
 import android.app.Application
-import be.vives.gamesitor.database.getDatabase
-import be.vives.gamesitor.repository.Repository
 import timber.log.Timber
 
 

@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 @Entity
 data class DatabaseCharacter(
     @PrimaryKey
-    val characterId: Int,
+    val characterId: String,
     val name: String,
     val exp: Long,
     val isHero: Boolean,
     val image: String,
-    val statsId: Int,
-    val equipmentId: Int
+    val statsId: String,
+    val equipmentId: String
 )
