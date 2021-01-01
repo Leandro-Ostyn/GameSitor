@@ -18,7 +18,7 @@ data class DatabasePlayer(
     val statusPointsDefence: Int,
     val statusPointsStrength: Int,
     val statusPointsHitpoints: Int,
-    val eXP: Long
+    val progress: Int
 )
 
 

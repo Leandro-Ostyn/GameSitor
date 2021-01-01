@@ -69,7 +69,7 @@ class Repository(private val database: SitorDatabase) {
     //Everything for Loading screen to Fill All variables.
 
     init {
-        _registering.value=false
+        _registering.value = false
     }
 
     //Getters From Db
@@ -323,7 +323,7 @@ class Repository(private val database: SitorDatabase) {
     suspend fun insertRewardToPlayer(player: Player, item: Item?) {
         withContext(Dispatchers.IO) {
             _player.postValue(player)
-            database.playerDao.updateExpAndCoins(player.EXP, player.coins, player.playerId)
+            database.playerDao.updateCoins(player.coins, player.playerId)
             database.characterDao.updateExpFromCharacter(
                 player.character.exp,
                 player.character.characterId
@@ -334,6 +334,13 @@ class Repository(private val database: SitorDatabase) {
         }
     }
 
+    suspend fun setProgressStages(player: Player) {
+        withContext(Dispatchers.IO) {
+            _player.postValue(player)
+            database.playerDao.updateProgress(player.progress, player.playerId)
+
+        }
+    }
 
     //Functions to Link Character , Stats, Equipment with Player with 1st Login
 
@@ -352,7 +359,7 @@ class Repository(private val database: SitorDatabase) {
                 image = character.image,
                 equipmentId = equipmentId,
                 isHero = character.isHero,
-                name = character.name,
+                name = character.name+ characterId.subSequence(0,7),
                 statsId = statsId
             )
             _dbPlayer.postValue(
@@ -362,7 +369,7 @@ class Repository(private val database: SitorDatabase) {
                     password = dbPlayer.password,
                     characterId = characterId,
                     coins = dbPlayer.coins,
-                    eXP = dbPlayer.eXP,
+                    progress = dbPlayer.progress,
                     inventoryId = dbPlayer.inventoryId,
                     statusPointsLeft = dbPlayer.statusPointsLeft,
                     statusPointsAttack = dbPlayer.statusPointsAttack,
@@ -413,8 +420,8 @@ class Repository(private val database: SitorDatabase) {
         }
     }
 
-    suspend fun stopRegistering(){
-        withContext(Dispatchers.IO){
+    suspend fun stopRegistering() {
+        withContext(Dispatchers.IO) {
             _registering.postValue(false)
         }
     }

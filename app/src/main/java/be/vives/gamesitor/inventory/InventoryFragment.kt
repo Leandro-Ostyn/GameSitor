@@ -52,6 +52,11 @@ class InventoryFragment : Fragment() {
                     inventoryViewModel.displayItemDetailsComplete()
                 }
             })
+        inventoryViewModel.player.observe(viewLifecycleOwner,{
+            if (it.inventory.items.isEmpty()){
+                binding.lblInventory.visibility= View.VISIBLE
+            }
+        })
         binding.btnMain.setOnClickListener{
             findNavController().navigate(InventoryFragmentDirections.actionBagFragmentToMainGameFragment())
         }

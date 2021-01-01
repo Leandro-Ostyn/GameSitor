@@ -16,7 +16,7 @@ import be.vives.gamesitor.database.entities.*
         CategoryTypeCrossRef::class, EquipmentItemsCrossRef::class,
         InventoryItemsCrossRef::class, ItemEffectCrossRef::class,
         ShopItemCrossRef::class, TypeItemCrossRef::class],
-    version = 1,
+    version = 8,
     exportSchema = false
 )
 

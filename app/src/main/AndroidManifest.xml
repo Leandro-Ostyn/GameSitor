@@ -9,10 +9,9 @@
     <application
         android:name="logging.SitorApplication"
         android:allowBackup="true"
-        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
+        android:icon="@mipmap/sitoricon"
         android:theme="@style/Theme.GameSitor">
         <activity
             android:name=".activity.MainActivity"

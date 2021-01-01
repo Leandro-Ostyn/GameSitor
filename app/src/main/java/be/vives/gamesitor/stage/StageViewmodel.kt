@@ -9,8 +9,6 @@ import be.vives.gamesitor.constants.HITPOINTS
 import be.vives.gamesitor.models.Character
 import be.vives.gamesitor.models.Player
 import be.vives.gamesitor.models.Stage
-import timber.log.Timber
-import java.util.logging.Handler
 
 class StageViewmodel(application: Application) : AndroidViewModel(application) {
     private val battleEngine: BattleEngine = BattleEngine()
@@ -30,10 +28,10 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
 
 
     private val _hpHeroStart = MutableLiveData<Int>()
-    val hpheroStart: LiveData<Int> get() = _hpHeroStart
+    val hpHeroStart: LiveData<Int> get() = _hpHeroStart
 
     private val _hpHero = MutableLiveData<Int>()
-    val hphero: LiveData<Int> get() = _hpHero
+    val hpHero: LiveData<Int> get() = _hpHero
 
     private val _hpEnemy = MutableLiveData<Int>()
     val hpEnemy: LiveData<Int> get() = _hpEnemy
@@ -46,8 +44,8 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
     val gameWon: LiveData<Boolean> get() = _gameWon
     private val _gameLost = MutableLiveData<Boolean>()
     val gameLost: LiveData<Boolean> get() = _gameLost
-    private val _stageset = MutableLiveData<Stage>()
-    val settedStage: LiveData<Stage> get() = _stageset
+    private val _stageSet = MutableLiveData<Stage>()
+    val settedStage: LiveData<Stage> get() = _stageSet
 
     init {
         _attacked.value = false
@@ -91,7 +89,7 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun setStage(stage: Stage) {
-        _stageset.postValue(stage)
+        _stageSet.postValue(stage)
     }
 
     private fun setEnemy(character: Character) {

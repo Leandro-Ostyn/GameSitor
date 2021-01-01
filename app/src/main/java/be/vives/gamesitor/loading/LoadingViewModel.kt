@@ -50,8 +50,6 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
         get() = _status
 
     //Checks to make sure everything runs in the correct sequence.
-    private val _dbPlayerDone = MutableLiveData<Boolean>()
-    val dbPlayerDone: LiveData<Boolean> get() = _dbPlayerDone
     private val _itemsAreSet = MutableLiveData<Boolean>()
     val itemsAreSet: LiveData<Boolean> get() = _itemsAreSet
     private val _rewardsAreSet = MutableLiveData<Boolean>()
@@ -71,7 +69,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
     private val _equipmentIdMade = MutableLiveData<Boolean>()
     val equipmentIdMade: LiveData<Boolean> get() = _equipmentIdMade
     private val _domainPlayerIsSet = MutableLiveData<Boolean>()
-    val domainPlayerIsSet : LiveData<Boolean> get() = _domainPlayerIsSet
+    val domainPlayerIsSet: LiveData<Boolean> get() = _domainPlayerIsSet
 
 
     private val _progress = MutableLiveData<Int>()
@@ -83,7 +81,6 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         _progress.value = 0
-        _dbPlayerDone.value = false
         _rewardsAreSet.value = false
         _itemsAreSet.value = false
         _equipmentsAreSet.value = false
@@ -93,7 +90,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
         _backgroundsAreSet.value = false
         _equipmentUpdated.value = false
         _equipmentIdMade.value = false
-        _domainPlayerIsSet.value= false
+        _domainPlayerIsSet.value = false
     }
 
 //private functions to make sure the sequence is correct
@@ -133,7 +130,8 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
     private fun equipmentIdIsMade() {
         _equipmentIdMade.postValue(true)
     }
-    private fun domainPlayerIsMade(){
+
+    private fun domainPlayerIsMade() {
         _domainPlayerIsSet.postValue(true)
     }
 
@@ -394,10 +392,10 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
                     statusPointsDefence = dbPlayer.statusPointsDefence,
                     statusPointsStrength = dbPlayer.statusPointsStrength,
                     statusPointsHitpoints = dbPlayer.statusPointsHitpoints,
-                    EXP = dbPlayer.eXP
+                    progress = dbPlayer.progress
                 )
             )
-        domainPlayerIsMade()
+            domainPlayerIsMade()
         }
     }
 
@@ -421,9 +419,6 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun setDbPlayerInitializeDone() {
-        _dbPlayerDone.postValue(true)
-    }
 
     //MappingFunctions from DB to Domain
     private fun getTypeItems(
@@ -512,6 +507,12 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
 
     fun stopRegistering() {
         viewModelScope.launch(Dispatchers.IO) { repository.stopRegistering() }
+    }
+
+    fun startRegistering() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setRegistering()
+        }
     }
 
     //Getting All api resources

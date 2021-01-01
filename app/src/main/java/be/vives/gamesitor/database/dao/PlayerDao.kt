@@ -31,11 +31,14 @@ interface PlayerDao {
     @Query("update databaseplayer set name = :name, password = :password where playerId = :playerId")
     fun updatePlayerNameAndPass(name: String, password: String, playerId: Int)
 
-    @Query("Update databaseplayer set coins = :coins , exp = :exp where playerId = :playerId ")
-    fun updateExpAndCoins(exp: Long, coins: Long, playerId: Int)
+    @Query("Update databaseplayer set coins = :coins  where playerId = :playerId ")
+    fun updateCoins( coins: Long, playerId: Int)
 
 
     @Query("Update databaseplayer set characterId = :characterId where playerId = :playerId ")
     fun updatePlayerCharacter(characterId : String, playerId: Int)
+
+    @Query("UPDATE databaseplayer set progress = :progress where playerId = :playerId")
+    fun updateProgress(progress : Int, playerId: Int)
 
 }

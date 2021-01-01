@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.MainGameFragmentBinding
+import be.vives.gamesitor.models.PlayerLevelHelper
 
 class MainGameFragment : Fragment() {
 
@@ -28,7 +29,7 @@ class MainGameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
+val playerLevelHelper = PlayerLevelHelper()
         binding = DataBindingUtil.inflate(inflater, R.layout.main_game_fragment, container, false)
         binding.lifecycleOwner = this
         binding.apply {
@@ -49,6 +50,17 @@ class MainGameFragment : Fragment() {
             btnShop.setOnClickListener {
                 findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToShopFragment())
             }
+
+            mainGameViewmodel.player.observe(viewLifecycleOwner,{
+              val level =  playerLevelHelper.getLevelFromExperience( it.character.exp)
+                binding.lblLevel.text = "Level: $level"
+               val  expleft = playerLevelHelper.getRemainingExperienceUntilNextLevel( it.character.exp)
+              binding.lblexpLeft.text = "exp for level up: $expleft"
+                val expNextLevel = playerLevelHelper.getExperienceFromLevel(level+1)
+                binding.progressBarlvl.max= expNextLevel
+                binding.progressBarlvl.progress = it.character.exp.toInt()
+
+            })
             return root
         }
     }

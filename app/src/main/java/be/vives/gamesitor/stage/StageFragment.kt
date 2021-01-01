@@ -82,7 +82,7 @@ class StageFragment : Fragment() {
             stages.observe(viewLifecycleOwner, { stageList ->
                 if (stageList != null) {
                     player.observe(viewLifecycleOwner, {
-                        prepareStage(stageList[0], it)
+                        prepareStage(stageList[it.progress], it)
 
                     })
                 }

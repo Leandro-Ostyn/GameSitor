@@ -57,30 +57,27 @@ class BattleEngine {
 
     private fun calculateHit(attacking: Character, defending: Character): Int {
 
-        val defence = calculateBonus(
+        val defenceDefending = calculateBonus(
             DEFENCE,
             defending
-        ) + (defending.stats.defence * playerLevelHelper.getLevelFromExperience(defending.exp))
-        val attack = calculateBonus(ATTACK, attacking) + (attacking.stats.attack* playerLevelHelper.getLevelFromExperience(defending.exp))
-        var procent = defence.toDouble() / attack.toDouble()
-        var attkdefbasedhit = 0.0
-        if (procent <= 0) {
-            attkdefbasedhit =
-                (calculateMaxHit(attacking) + (calculateMaxHit(attacking) * procent)) / 2
-        } else if (procent >= 0) {
-          attkdefbasedhit=  (calculateMaxHit(attacking) + (calculateMaxHit(attacking) * procent)) / 2
-        }
-Timber.i(procent.toString() + "this is the procent")
+        ) + (defending.stats.defence * playerLevelHelper.getLevelFromExperience(defending.exp)).toDouble()
+        val attackAttacking = calculateBonus(
+            ATTACK,
+            attacking
+        ) + (attacking.stats.attack * playerLevelHelper.getLevelFromExperience(defending.exp)).toDouble()
+        val attkdefbasedhit = attackAttacking /defenceDefending
+        var  attkdefstrbasedhit: Double
         if (attkdefbasedhit<=1){
-            attkdefbasedhit = 1.0
+            Timber.i("using the second formula")
+        attkdefstrbasedhit=   calculateMaxHit(attacking)*attkdefbasedhit
         }
-        Timber.i("%s this should be the new calculated hits", attkdefbasedhit.toString())
-        Timber.i("%s this is the current hit", calculateMaxHit(attacking))
-        val random = Random()
+            attkdefstrbasedhit= (calculateMaxHit(attacking)+attkdefbasedhit)
 
-        return random.nextInt(attkdefbasedhit.toInt())
+        val random = Random()
+        return random.nextInt(attkdefstrbasedhit.roundToInt())+1
     }
 }
+
 
 
 

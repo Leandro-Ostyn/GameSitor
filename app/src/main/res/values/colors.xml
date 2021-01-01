@@ -7,6 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#6BFFFFFF</color>
-    <color name="victoryBlue">#0091EA</color>
-    <color name="defeatRed">#D50000</color>
+    <color name="defeatBlue">#0091EA</color>
+    <color name="victoryRed">#D50000</color>
 </resources>

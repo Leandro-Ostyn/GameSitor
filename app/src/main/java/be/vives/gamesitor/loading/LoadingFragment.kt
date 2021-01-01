@@ -91,7 +91,6 @@ class LoadingFragment : Fragment() {
                                                                                                         it,
                                                                                                         equipmentId
                                                                                                     )
-                                                                                                    setDbPlayerInitializeDone()
                                                                                                     stopRegistering()
                                                                                                 }
                                                                                             })
@@ -109,41 +108,45 @@ class LoadingFragment : Fragment() {
                                 }
                             })
                         }
-                        if (!registering){
-                            setSettings(dbPlayer.value!!)
-                            getStats().observe(viewLifecycleOwner,
-                                { dbStats ->
-                                    if (dbStats != null) {
-                                        setStats(dbStats)
-                                        Timber.i("set Stats was a succes")
-                                    }
-                                })
-                            getBackgrounds().observe(viewLifecycleOwner,
-                                { dbBackgrounds ->
-                                    if (dbBackgrounds != null) {
-                                        setBackgrounds(dbBackgrounds)
-                                        Timber.i("set backgrounds was a succes")
-                                    }
-                                })
-                            getItems().observe(viewLifecycleOwner, { items ->
-                                if (items != null) {
-                                    setItems(items)
-                                    itemsAreSet.observe(viewLifecycleOwner, { itemsAreSet ->
-                                        if (itemsAreSet) {
-                                            Timber.i("set Items was a succes")
-                                            setRewards(items)
-                                            Timber.i("set Rewards was a succes")
-                                            setEquipments(items)
-
-                                            setInventories(items)
-                                            Timber.i("set Inventories was a succes")
-                                            setTypes(items)
-                                            Timber.i("set Types was a succes")
+                        if (!registering) {
+                            if (dbPlayer.value!!.characterId != "0") {
+                                setSettings(dbPlayer.value!!)
+                                getStats().observe(viewLifecycleOwner,
+                                    { dbStats ->
+                                        if (dbStats != null) {
+                                            setStats(dbStats)
+                                            Timber.i("set Stats was a succes")
                                         }
                                     })
+                                getBackgrounds().observe(viewLifecycleOwner,
+                                    { dbBackgrounds ->
+                                        if (dbBackgrounds != null) {
+                                            setBackgrounds(dbBackgrounds)
+                                            Timber.i("set backgrounds was a succes")
+                                        }
+                                    })
+                                getItems().observe(viewLifecycleOwner, { items ->
+                                    if (items != null) {
+                                        setItems(items)
+                                        itemsAreSet.observe(viewLifecycleOwner, { itemsAreSet ->
+                                            if (itemsAreSet) {
+                                                Timber.i("set Items was a succes")
+                                                setRewards(items)
+                                                Timber.i("set Rewards was a succes")
+                                                setEquipments(items)
 
-                                }
-                            })
+                                                setInventories(items)
+                                                Timber.i("set Inventories was a succes")
+                                                setTypes(items)
+                                                Timber.i("set Types was a succes")
+                                            }
+                                        })
+
+                                    }
+                                })
+                            }else if (dbPlayer.value!!.characterId == "0") {
+                                startRegistering()
+                            }
                         }
                     })
                 }

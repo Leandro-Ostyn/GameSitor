@@ -55,7 +55,7 @@ class LoginRepository(private val database: SitorDatabase) {
                 playerId = 0,
                 characterId = "0",
                 coins = 500L,
-                eXP = 0L,
+                progress = 0,
                 inventoryId = inventoryId,
                 name = username,
                 password = password,
