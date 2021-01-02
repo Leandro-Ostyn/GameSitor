@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -40,12 +41,6 @@ class StageFragment : Fragment() {
         binding.btnLeave.setOnClickListener {
             findNavController().navigate(StageFragmentDirections.actionStageFragmentToMainGameFragment())
         }
-        stageViewModel.attacked.observe(viewLifecycleOwner, {attacked->
-            if (attacked==true) {
-                Timber.i(attacked.toString())
-                 stageViewModel.defend()
-            }
-        })
 
         stageViewModel.gameLost.observe(viewLifecycleOwner, { lost ->
             if (lost) {
@@ -87,20 +82,51 @@ class StageFragment : Fragment() {
                     })
                 }
             })
-            attacked.observe(viewLifecycleOwner, Observer {
+            attacked.observe(viewLifecycleOwner, {
                 if (it) {
+                    binding.btnAttack.isEnabled = false
+                    hpEnemy.observe(viewLifecycleOwner, { hpleft ->
+                        if (hpleft > 0) {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                defend()
+                            }, 500)
+                        }
+                    })
+                } else {
+                    binding.btnAttack.isEnabled = true
+                }
+
+            })
+
+            hitIsNull.observe(viewLifecycleOwner, {
+                if (it) {
+                    val toast = Toast.makeText(context, "The hit was evaded !", Toast.LENGTH_SHORT)
+                    toast.setGravity(1, 200, 200)
+                    toast.show()
+
+                    hitIsNullShown()
+                }
+            })
+            hpEnemy.observe(viewLifecycleOwner, { hpleft ->
+                if (hpleft <= 0) {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        defend()
-                    }, 500)
+                        gameWon()
+                    }, 100)
+                }
+            })
+
+            hpHero.observe(viewLifecycleOwner, { hpleft ->
+                if (hpleft <= 0) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        gameLost()
+                    }, 100)
 
                 }
             })
-            gameWon.observe(viewLifecycleOwner, Observer {
-                if (it) {
-                    Timber.i("i won ")
-                }
-            })
+
         }
+
+
         return binding.root
     }
 }

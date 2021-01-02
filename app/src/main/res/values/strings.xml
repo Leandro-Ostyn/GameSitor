@@ -33,4 +33,15 @@
     <string name="SitorPass">SitorPass</string>
     <string name="KeepLoggedIn">KeepLoggedIn</string>
     <string name="claim_reward">Claim reward !</string>
+    <string name="these_are_the_current_stats_of_your_character">These are the current Stats of your Character</string>
+    <string name="attackStats">Attack:</string>
+    <string name="strength">Strength:</string>
+    <string name="defence">Defence:</string>
+    <string name="hitpoints">Hitpoints:</string>
+    <string name="status_points_left_to_spend">Status points Left to spend:</string>
+    <string name="points_spended_on_hp">points spent on HP:</string>
+    <string name="points_spended_on_attack">points spent on Attack:</string>
+    <string name="points_spended_on_strength">points spent on Strength:</string>
+    <string name="points_spended_on_defence">points spent on Defence:</string>
+    <string name="klick_on_hero_to_view_stats">Klick on Hero to view stats</string>
 </resources>

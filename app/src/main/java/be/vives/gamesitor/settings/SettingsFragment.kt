@@ -144,14 +144,21 @@ class SettingsFragment : Fragment() {
         builder.setView(passwordEditText)
         builder.setPositiveButton("confirm") { dialogInterface: DialogInterface, i: Int ->
             if (hint == OLD_PASSWORD) {
+                if (passwordEditText.text.toString().length >=5){
                 inputList.add(passwordEditText.text.toString())
-                showPassWordPrompt("Set new password", "", NEW_PASSWORD, inputList)
+                showPassWordPrompt("Set new password", "", NEW_PASSWORD, inputList)}
+                else{
+                    Toast.makeText(context, "Password must contain 5 characters", Toast.LENGTH_SHORT).show()}
             }
             if (hint == NEW_PASSWORD) {
+                if (passwordEditText.text.toString().length >=5){
                 inputList.add(passwordEditText.text.toString())
-                showPassWordPrompt("Confirm new password", "", CONFIRM_PASSWORD, inputList)
+                showPassWordPrompt("Confirm new password", "", CONFIRM_PASSWORD, inputList)}
+                    else{
+                Toast.makeText(context, "Password must contain 5 characters", Toast.LENGTH_SHORT).show()}
             }
             if (hint == CONFIRM_PASSWORD) {
+                if (passwordEditText.text.toString().length >=5){
                 inputList.add(passwordEditText.text.toString())
                 settingsViewModel.player.observe(viewLifecycleOwner, {
                     if (it != null) {
@@ -164,13 +171,16 @@ class SettingsFragment : Fragment() {
                                 requireActivity().getPreferences(Context.MODE_PRIVATE).edit()
                                     .putString(getString(R.string.SitorPass), it.password).apply()
                             } else {
-                                prompt()
+                                prompt("your new password and confirm password didn't match")
                             }
                         } else {
-                            prompt()
+                            prompt("Your old password wasnt correct")
                         }
                     }
-                })
+                })}
+                else{
+                   prompt("One of the passwords didn't match")
+                }
             }
         }
         builder.setNegativeButton("cancel") { _, _ -> }
@@ -179,12 +189,13 @@ class SettingsFragment : Fragment() {
         dialog.show()
     }
 
-    private fun prompt() {
+    private fun prompt(message: String) {
         val builderInBuilder = AlertDialog.Builder(context)
         builderInBuilder.setCancelable(true)
         builderInBuilder.setTitle("SOMETHING WENT WRONG!")
-        builderInBuilder.setMessage("One of the passwords didn't match")
+        builderInBuilder.setMessage(message)
         builderInBuilder.setNegativeButton("confirm") { _, _ -> }
+        builderInBuilder.show()
     }
 
     fun Context.hideKeyboard(view: View) {

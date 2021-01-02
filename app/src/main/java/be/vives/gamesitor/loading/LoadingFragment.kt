@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -48,7 +49,7 @@ class LoadingFragment : Fragment() {
                 }
 
             } else {
-                binding.imageView6.setImageResource(R.drawable.shopbackground)
+                Toast.makeText(context, "Without internetConnection you cannot play the game.", Toast.LENGTH_LONG).show()
             }
         })
         loadingViewModel.apply {

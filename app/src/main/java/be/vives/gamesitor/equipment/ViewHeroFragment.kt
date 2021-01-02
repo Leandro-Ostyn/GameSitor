@@ -112,6 +112,9 @@ class ViewHeroFragment : Fragment() {
             findNavController().navigate(ViewHeroFragmentDirections.actionViewHeroFragmentToMainGameFragment())
         }
 
+        binding.imgHero.setOnClickListener {
+            findNavController().navigate(ViewHeroFragmentDirections.actionViewHeroFragmentToStatsFragment())
+        }
         viewHeroViewModel.apply {
             player.observe(viewLifecycleOwner, {player ->
                 if (player != null) {

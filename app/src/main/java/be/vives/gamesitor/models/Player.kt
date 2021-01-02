@@ -1,7 +1,5 @@
 package be.vives.gamesitor.models
 
-import androidx.room.Embedded
-
 data class Player(
     var playerId: Int,
     var name: String,
@@ -9,10 +7,10 @@ data class Player(
     var character: Character,
     var coins: Long,
     var inventory: Inventory,
-    val statusPointsLeft: Int,
-    val statusPointsAttack: Int,
-    val statusPointsDefence: Int,
-    val statusPointsStrength: Int,
-    val statusPointsHitpoints: Int,
+    var statusPointsLeft: Int,
+    var statusPointsAttack: Int,
+    var statusPointsDefence: Int,
+    var statusPointsStrength: Int,
+    var statusPointsHitpoints: Int,
     var progress: Int
 )

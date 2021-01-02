@@ -41,4 +41,8 @@ interface PlayerDao {
     @Query("UPDATE databaseplayer set progress = :progress where playerId = :playerId")
     fun updateProgress(progress : Int, playerId: Int)
 
+    @Query("UPDATE databaseplayer set statusPointsDefence = :statusPointsDefence, statusPointsLeft = :statusPointsLeft ,statusPointsAttack = :statusPointsAttack, statusPointsStrength = :statusPointsStrength, statusPointsHitpoints= :statusPointsHitPoints where playerId = :playerId")
+    fun updateStatus(statusPointsLeft : Int, statusPointsDefence : Int ,statusPointsAttack:Int,statusPointsStrength : Int,statusPointsHitPoints : Int,playerId: Int)
+
+
 }

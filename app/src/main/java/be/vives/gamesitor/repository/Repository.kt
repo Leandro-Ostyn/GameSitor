@@ -66,13 +66,14 @@ class Repository(private val database: SitorDatabase) {
     val settings: LiveData<DatabaseSettings> get() = _settings
 
 
-    //Everything for Loading screen to Fill All variables.
-
     init {
         _registering.value = false
     }
 
-    //Getters From Db
+    //Everything for Loading screen to Fill All variables.
+
+
+    //Getters From Db ------------------------------------------------------------------------------------------------- GETTER SECTION --------------------------------------------------------------------------------------------
     @JvmName("getItems1")
     fun getItems(): LiveData<List<Item>> {
         return database.itemDao.getAllItemsWithEffects()
@@ -143,7 +144,7 @@ class Repository(private val database: SitorDatabase) {
         return database.settingsDao.getSettingsByPlayerName(name)
     }
 
-    //Setters to map from db to Domain Models.
+    //Setters to map from db to Domain Models. ------------------------------------------------------------------------------------------------- SETTER SECTION --------------------------------------------------------------------------------------------
     suspend fun setItems(itemList: List<Item>) {
         withContext(Dispatchers.IO) {
             _items.postValue(itemList)
@@ -226,7 +227,7 @@ class Repository(private val database: SitorDatabase) {
         }
     }
 
-    //Functions To update the liveData Models
+    //Functions To update the liveData Models   ------------------------------------------------------------------------------------------------- UPDATE SECTION --------------------------------------------------------------------------------------------
     suspend fun removeEquippedItem(equipmentId: String, itemId: Int) {
         withContext(Dispatchers.IO) { database.equipmentDao.removeCrossReff(itemId, equipmentId) }
     }
@@ -328,6 +329,7 @@ class Repository(private val database: SitorDatabase) {
                 player.character.exp,
                 player.character.characterId
             )
+            updateStatusPoints(player)
             if (item != null) {
                 database.inventoryDao.insertCrossReff(item.itemId, player.inventory.inventoryId)
             }
@@ -342,7 +344,36 @@ class Repository(private val database: SitorDatabase) {
         }
     }
 
-    //Functions to Link Character , Stats, Equipment with Player with 1st Login
+    suspend fun updateStatusPoints(player: Player) {
+        withContext(Dispatchers.IO) {
+            database.playerDao.updateStatus(
+                player.statusPointsLeft,
+                player.statusPointsDefence,
+                player.statusPointsAttack,
+                player.statusPointsStrength,
+                player.statusPointsHitpoints,
+                player.playerId
+            )
+            _player.postValue(player)
+        }
+
+    }
+
+    suspend fun updateStatsPlayer(player: Player) {
+        withContext(Dispatchers.IO) {
+            val updateStats = DatabaseStats(
+                statsId = player.character.stats.statsId,
+                attack = player.character.stats.attack,
+                strength = player.character.stats.strength,
+                defence = player.character.stats.defence,
+                lifepoints = player.character.stats.lifepoints
+            )
+            database.statsDao.insertAll(updateStats)
+            _player.postValue(player)
+        }
+    }
+
+    //Functions to Link Character , Stats, Equipment with Player with 1st Login ------------------------------------------------------------------------------------------------- REGISTER SECTION --------------------------------------------------------------------------------------------
 
 
     suspend fun makeCharacterForPlayer(
@@ -359,7 +390,7 @@ class Repository(private val database: SitorDatabase) {
                 image = character.image,
                 equipmentId = equipmentId,
                 isHero = character.isHero,
-                name = character.name+ characterId.subSequence(0,7),
+                name = character.name + characterId.subSequence(0, 7),
                 statsId = statsId
             )
             _dbPlayer.postValue(
@@ -425,8 +456,8 @@ class Repository(private val database: SitorDatabase) {
             _registering.postValue(false)
         }
     }
-//-------------------------------------------------------------------------API SECTION -----------------------------------------------------------------------------------------------------------
-//Fetching  From Api, mapping to DatabaseModel
+//Fetching  From Api, mapping to DatabaseModel -------------------------------------------------------------------------API SECTION -----------------------------------------------------------------------------------------------------------
+
 
     suspend fun refreshBackgrounds() {
         withContext(Dispatchers.IO) {
