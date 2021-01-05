@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="stats.StatsFragment">
+    <data>
+        <variable
+            name="viewmodel"
+            type="be.vives.gamesitor.stats.StatsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/statsbackground">
+
+        <TextView
+            android:id="@+id/lblStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/these_are_the_current_stats_of_your_character"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.104"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/lblAttack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/attackStats"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.441"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.107" />
+
+        <TextView
+            android:id="@+id/lblStrength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/strength"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.449"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.589" />
+
+        <TextView
+            android:id="@+id/lblDefence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/defence"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.023"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.589" />
+
+        <TextView
+            android:id="@+id/lblHitPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/hitpoints"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.023"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.107" />
+
+        <TextView
+            android:id="@+id/txtHitpoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.character.stats.lifepoints)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.135"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.107" />
+
+        <TextView
+            android:id="@+id/txtAttack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.character.stats.attack)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.552"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.107" />
+
+        <TextView
+            android:id="@+id/txtStrength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.character.stats.strength)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.552"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.589" />
+
+        <TextView
+            android:id="@+id/txtDefence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.character.stats.defence)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.123"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.589" />
+
+        <TextView
+            android:id="@+id/lblStsPntsLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/status_points_left_to_spend"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.971"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.423" />
+
+        <TextView
+            android:id="@+id/lblStsPntsHp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/points_spended_on_hp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.027"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.336" />
+
+        <TextView
+            android:id="@+id/lblStsPntsAttack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/points_spended_on_attack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.336" />
+
+        <TextView
+            android:id="@+id/lblStsPntsStr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/points_spended_on_strength"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.527"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.826" />
+
+        <TextView
+            android:id="@+id/lblStsPntsStr2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@string/points_spended_on_defence"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.028"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.826" />
+
+        <TextView
+            android:id="@+id/txtStspntsLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.statusPointsLeft)}"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.91"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.541" />
+
+        <TextView
+            android:id="@+id/txtStspntsHP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.statusPointsHitpoints)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.069"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.423" />
+
+        <TextView
+            android:id="@+id/txtStspntsAttack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.statusPointsAttack)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.423" />
+
+        <TextView
+            android:id="@+id/txtStspntsStr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.statusPointsStrength)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.9" />
+
+        <TextView
+            android:id="@+id/txtPointsDef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#82FFFFFF"
+            android:text="@{Integer.toString(viewmodel.player.statusPointsDefence)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.069"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.926" />
+
+        <Button
+            android:id="@+id/btnRemoveHp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/minknop"
+            app:backgroundTint="#02FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.131"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.191" />
+
+        <Button
+            android:id="@+id/btnAddHp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/plusknop"
+            app:backgroundTint="#02FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.023"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.191" />
+
+        <Button
+            android:id="@+id/btnAddAttack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/plusknop"
+            app:backgroundTint="#02FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.438"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.191" />
+
+        <Button
+            android:id="@+id/btnAddStrength"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/plusknop"
+            app:backgroundTint="#02FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.438"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.695" />
+
+        <Button
+            android:id="@+id/btnAddDefence"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/plusknop"
+            app:backgroundTint="#02FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.023"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.695" />
+
+        <Button
+            android:id="@+id/btnRemoveAttack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/minknop"
+            app:backgroundTint="#00FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:iconTint="#02FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.191" />
+
+        <Button
+            android:id="@+id/btnRemoveStr"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/minknop"
+            app:backgroundTint="#00FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:iconTint="#02FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.695" />
+
+        <Button
+            android:id="@+id/btnRemoveDef"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/minknop"
+            app:backgroundTint="#00FFFFFF"
+            app:backgroundTintMode="src_over"
+            app:iconTint="#02FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.695" />
+
+        <Button
+            android:id="@+id/btnEquipmentStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Equipment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.935"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.944" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

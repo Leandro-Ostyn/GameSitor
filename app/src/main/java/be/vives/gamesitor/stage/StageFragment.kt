@@ -52,6 +52,7 @@ class StageFragment : Fragment() {
                                 false
                             )
                         )
+                        stageViewModel.setFalse()
                     }
                 })
             }
@@ -67,6 +68,7 @@ class StageFragment : Fragment() {
                                 won
                             )
                         )
+                        stageViewModel.setFalse()
                     }
                 })
             }

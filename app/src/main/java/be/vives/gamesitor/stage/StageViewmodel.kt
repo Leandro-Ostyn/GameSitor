@@ -126,6 +126,10 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
         _gameLost.value = true
     }
 
+    fun setFalse(){
+        _gameLost.postValue(false)
+        _gameWon.postValue(false)
+    }
     class StageViewmodelFactory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(StageViewmodel::class.java)) {
