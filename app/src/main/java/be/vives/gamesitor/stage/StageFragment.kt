@@ -35,6 +35,7 @@ class StageFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.btnAttack.setOnClickListener() {
+            binding.btnAttack.isEnabled = false
               moveHero(binding.ImgHero)
             Handler(Looper.getMainLooper()).postDelayed({
                 stageViewModel.attack()
@@ -57,7 +58,7 @@ class StageFragment : Fragment() {
             })
             attacked.observe(viewLifecycleOwner, {
                 if (it) {
-                    binding.btnAttack.isEnabled = false
+
                     hpEnemy.observe(viewLifecycleOwner, { hpleft ->
                         if (hpleft > 0) {
                             Handler(Looper.getMainLooper()).postDelayed({
