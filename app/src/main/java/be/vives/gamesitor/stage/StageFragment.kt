@@ -1,21 +1,26 @@
 package be.vives.gamesitor.stage
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.graphics.Path
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.StageFragmentBinding
-
 import timber.log.Timber
+
 
 class StageFragment : Fragment() {
 
@@ -36,43 +41,15 @@ class StageFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.btnAttack.setOnClickListener() {
-            stageViewModel.attack()
+              moveHero(binding.ImgHero)
+            Handler(Looper.getMainLooper()).postDelayed({
+                stageViewModel.attack()
+            }, 800)
         }
         binding.btnLeave.setOnClickListener {
             findNavController().navigate(StageFragmentDirections.actionStageFragmentToMainGameFragment())
         }
 
-        stageViewModel.gameLost.observe(viewLifecycleOwner, { lost ->
-            if (lost) {
-                stageViewModel.settedStage.observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        findNavController().navigate(
-                            StageFragmentDirections.actionStageFragmentToStageResultFragment(
-                                it.reward.rewardId,
-                                false
-                            )
-                        )
-                        stageViewModel.setFalse()
-                    }
-                })
-            }
-        })
-
-        stageViewModel.gameWon.observe(viewLifecycleOwner, { won ->
-            if (won) {
-                stageViewModel.settedStage.observe(viewLifecycleOwner, {
-                    if (it != null) {
-                        findNavController().navigate(
-                            StageFragmentDirections.actionStageFragmentToStageResultFragment(
-                                it.reward.rewardId,
-                                won
-                            )
-                        )
-                        stageViewModel.setFalse()
-                    }
-                })
-            }
-        })
         binding.viewmodel = stageViewModel
         stageViewModel.apply {
 
@@ -90,8 +67,12 @@ class StageFragment : Fragment() {
                     hpEnemy.observe(viewLifecycleOwner, { hpleft ->
                         if (hpleft > 0) {
                             Handler(Looper.getMainLooper()).postDelayed({
+                                moveEnemy(binding.imgEnemy)
+
+                            }, 1000)
+                            Handler(Looper.getMainLooper()).postDelayed({
                                 defend()
-                            }, 500)
+                            }, 1800)
                         }
                     })
                 } else {
@@ -99,7 +80,6 @@ class StageFragment : Fragment() {
                 }
 
             })
-
             hitIsNull.observe(viewLifecycleOwner, {
                 if (it) {
                     val toast = Toast.makeText(context, "The hit was evaded !", Toast.LENGTH_SHORT)
@@ -116,7 +96,6 @@ class StageFragment : Fragment() {
                     }, 100)
                 }
             })
-
             hpHero.observe(viewLifecycleOwner, { hpleft ->
                 if (hpleft <= 0) {
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -125,10 +104,58 @@ class StageFragment : Fragment() {
 
                 }
             })
+            gameLost.observe(viewLifecycleOwner, { lost ->
+                if (lost) {
+                    stageViewModel.settedStage.observe(viewLifecycleOwner, {
+                        if (it != null) {
+                            findNavController().navigate(
+                                StageFragmentDirections.actionStageFragmentToStageResultFragment(
+                                    it.reward.rewardId,
+                                    false
+                                )
+                            )
+                            stageViewModel.setFalse()
+                        }
+                    })
+                }
+            })
+            gameWon.observe(viewLifecycleOwner, { won ->
+                if (won) {
+                    stageViewModel.settedStage.observe(viewLifecycleOwner, {
+                        if (it != null) {
+                            findNavController().navigate(
+                                StageFragmentDirections.actionStageFragmentToStageResultFragment(
+                                    it.reward.rewardId,
+                                    won
+                                )
+                            )
+                            stageViewModel.setFalse()
+                        }
+                    })
+                }
+            })
 
         }
-
-
         return binding.root
     }
+    private fun moveHero(imageView: ImageView) {
+     imageView.animate().xBy(500f).yBy(-150f).withEndAction {
+         imageView.animate().xBy(700f).yBy(-80f).withEndAction {
+             imageView.animate().xBy(-700f).yBy(80f).withEndAction {
+                 imageView.animate().xBy(-500f).yBy(150f)
+
+             }
+         }
+     }
+    }
+    private fun moveEnemy(imageView: ImageView) {
+        imageView.animate().xBy(-500f).yBy(-150f).withEndAction {
+            imageView.animate().xBy(-700f).yBy(-80f).withEndAction {
+                imageView.animate().xBy(700f).yBy(80f).withEndAction {
+                    imageView.animate().xBy(500f).yBy(150f)
+                }
+            }
+        }
+    }
 }
+

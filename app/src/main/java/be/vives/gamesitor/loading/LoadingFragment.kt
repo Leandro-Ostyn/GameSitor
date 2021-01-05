@@ -49,7 +49,7 @@ class LoadingFragment : Fragment() {
                 }
 
             } else {
-                Toast.makeText(context, "Without internetConnection you cannot play the game.", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Without internet connection you cannot play the game.", Toast.LENGTH_LONG).show()
             }
         })
         loadingViewModel.apply {
@@ -135,7 +135,6 @@ class LoadingFragment : Fragment() {
                                                 setRewards(items)
                                                 Timber.i("set Rewards was a succes")
                                                 setEquipments(items)
-
                                                 setInventories(items)
                                                 Timber.i("set Inventories was a succes")
                                                 setTypes(items)

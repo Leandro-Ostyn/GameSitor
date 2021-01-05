@@ -90,7 +90,6 @@ class Repository(private val database: SitorDatabase) {
 
     fun getChosenItem(itemId: Int): LiveData<Item> {
         return database.itemDao.getItemsWithEffects(itemId)
-
     }
 
     @JvmName("getBackgrounds1")
@@ -284,7 +283,6 @@ class Repository(private val database: SitorDatabase) {
                 equipmentId = player.character.equipment.equipmentId,
                 itemId = itemId
             )
-            //  _player.postValue(player)
             database.equipmentDao.insertCrossReff(crossref)
         }
     }
