@@ -1,16 +1,11 @@
 package be.vives.gamesitor.stage
 
-import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.graphics.Path
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewPropertyAnimator
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -19,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.StageFragmentBinding
-import timber.log.Timber
 
 
 class StageFragment : Fragment() {
