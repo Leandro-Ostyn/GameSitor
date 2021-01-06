@@ -35,7 +35,6 @@ class StatsFragment : Fragment() {
             if (player != null) {
                 binding.btnAddAttack.setOnClickListener {
                     statsViewModel.updateStatusPoints(ATTACK, ADD, player)
-                    Timber.i("Btn attack")
                 }
                 binding.btnAddDefence.setOnClickListener {
                     statsViewModel.updateStatusPoints(DEFENCE, ADD, player)

@@ -25,8 +25,9 @@ class StatsViewModel(application: Application) : AndroidViewModel(application) {
                     repository.updateStatsPlayer(addLevelFromAttribute(attribute, player))
                 }
             } else if (action == REMOVE) {
-                repository.updateStatusPoints(deleteAttributes(attribute, player))
                 repository.updateStatsPlayer(deleteLevelFromAttribute(attribute, player))
+                repository.updateStatusPoints(deleteAttributes(attribute, player))
+
             }
 
         }
@@ -116,12 +117,12 @@ class StatsViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
             STRENGTH -> {
-                if (player.statusPointsDefence >= 1) {
+                if (player.statusPointsStrength >= 1) {
                     player.character.stats.strength--
                 }
             }
             HITPOINTS -> {
-                if (player.statusPointsDefence >= 1) {
+                if (player.statusPointsHitpoints >= 1) {
                     player.character.stats.lifepoints--
                 }
             }
