@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.StageFragmentBinding
+import timber.log.Timber
 
 
 class StageFragment : Fragment() {
@@ -36,7 +37,12 @@ class StageFragment : Fragment() {
 
         binding.btnAttack.setOnClickListener() {
             binding.btnAttack.isEnabled = false
-              moveHero(binding.ImgHero)
+            stageViewModel.settings.observe(viewLifecycleOwner,{
+                if (!it.hideAnimations){
+                    moveHero(binding.ImgHero)
+                }
+            })
+
             Handler(Looper.getMainLooper()).postDelayed({
                 stageViewModel.attack()
             }, 800)
@@ -61,10 +67,16 @@ class StageFragment : Fragment() {
 
                     hpEnemy.observe(viewLifecycleOwner, { hpleft ->
                         if (hpleft > 0) {
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                moveEnemy(binding.imgEnemy)
+                            stageViewModel.settings.observe(viewLifecycleOwner,{
+                                Timber.i(it.hideAnimations.toString() +"this is how the setting is set")
+                                if (!it.hideAnimations){
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        moveEnemy(binding.imgEnemy)
 
-                            }, 1000)
+                                    }, 1000)
+                                }
+                            })
+
                             Handler(Looper.getMainLooper()).postDelayed({
                                 defend()
                             }, 1800)

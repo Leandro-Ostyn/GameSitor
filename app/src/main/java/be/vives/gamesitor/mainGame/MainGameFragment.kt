@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedDispatcher
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -29,7 +30,7 @@ class MainGameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-val playerLevelHelper = PlayerLevelHelper()
+        val playerLevelHelper = PlayerLevelHelper()
         binding = DataBindingUtil.inflate(inflater, R.layout.main_game_fragment, container, false)
         binding.lifecycleOwner = this
         binding.apply {
@@ -51,13 +52,14 @@ val playerLevelHelper = PlayerLevelHelper()
                 findNavController().navigate(MainGameFragmentDirections.actionMainGameFragmentToShopFragment())
             }
 
-            mainGameViewmodel.player.observe(viewLifecycleOwner,{
-              val level =  playerLevelHelper.getLevelFromExperience( it.character.exp)
+            mainGameViewmodel.player.observe(viewLifecycleOwner, {
+                val level = playerLevelHelper.getLevelFromExperience(it.character.exp)
                 binding.lblLevel.text = "Level: $level"
-               val  expleft = playerLevelHelper.getRemainingExperienceUntilNextLevel( it.character.exp)
-              binding.lblexpLeft.text = "exp for level up: $expleft"
-                val expNextLevel = playerLevelHelper.getExperienceFromLevel(level+1)
-                binding.progressBarlvl.max= expNextLevel
+                val expleft =
+                    playerLevelHelper.getRemainingExperienceUntilNextLevel(it.character.exp)
+                binding.lblexpLeft.text = "exp for level up: $expleft"
+                val expNextLevel = playerLevelHelper.getExperienceFromLevel(level + 1)
+                binding.progressBarlvl.max = expNextLevel
                 binding.progressBarlvl.progress = it.character.exp.toInt()
 
             })

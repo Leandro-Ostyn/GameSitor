@@ -410,7 +410,7 @@ class LoadingViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             val settings = DatabaseSettings(
                 settingId = 0,
-                hideAnimations = true,
+                hideAnimations = false,
                 musicOn = false,
                 playerName = name,
                 passWord = password,

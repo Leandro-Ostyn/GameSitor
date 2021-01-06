@@ -6,6 +6,7 @@ import be.vives.gamesitor.constants.getDatabase
 import be.vives.gamesitor.constants.getRepository
 import be.vives.gamesitor.battleEngine.BattleEngine
 import be.vives.gamesitor.constants.HITPOINTS
+import be.vives.gamesitor.database.entities.DatabaseSettings
 import be.vives.gamesitor.models.Character
 import be.vives.gamesitor.models.Player
 import be.vives.gamesitor.models.Stage
@@ -41,6 +42,8 @@ class StageViewmodel(application: Application) : AndroidViewModel(application) {
     val settedStage: LiveData<Stage> get() = _stageSet
     private val _hitsIsNull = MutableLiveData<Boolean>()
     val hitIsNull: LiveData<Boolean> get() = _hitsIsNull
+    private val _settings = repository.settings
+    val settings: LiveData<DatabaseSettings> get() = _settings
 
     init {
         _attacked.value = false
