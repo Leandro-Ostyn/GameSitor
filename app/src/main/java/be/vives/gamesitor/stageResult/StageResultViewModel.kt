@@ -103,6 +103,8 @@ class StageResultViewModel(application: Application, val rewardId: Int) :
 
     fun setFalse() {
         _insertedReward.postValue(false)
+        _progressUpdated.postValue(false)
+        _gameWon.postValue(false)
     }
 
     private fun checkUpdateStatusPointsNeeded(player: Player, reward: Reward): Int {

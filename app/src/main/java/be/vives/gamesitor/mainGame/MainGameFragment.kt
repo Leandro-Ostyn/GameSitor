@@ -1,9 +1,11 @@
 package be.vives.gamesitor.mainGame
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -12,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import be.vives.gamesitor.R
 import be.vives.gamesitor.databinding.MainGameFragmentBinding
 import be.vives.gamesitor.models.PlayerLevelHelper
+
 
 class MainGameFragment : Fragment() {
 
@@ -65,6 +68,20 @@ class MainGameFragment : Fragment() {
             })
             return root
         }
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
+            true // default to enabled
+        ) {
+            override fun handleOnBackPressed() {
+               requireActivity().moveTaskToBack(true)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,  // LifecycleOwner
+            callback
+        )
     }
 }
 
