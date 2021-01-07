@@ -68,7 +68,6 @@ class StageFragment : Fragment() {
                     hpEnemy.observe(viewLifecycleOwner, { hpleft ->
                         if (hpleft > 0) {
                             stageViewModel.settings.observe(viewLifecycleOwner,{
-                                Timber.i(it.hideAnimations.toString() +"this is how the setting is set")
                                 if (!it.hideAnimations){
                                     Handler(Looper.getMainLooper()).postDelayed({
                                         moveEnemy(binding.imgEnemy)

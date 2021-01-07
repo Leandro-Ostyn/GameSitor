@@ -34,6 +34,7 @@ class Repository(private val database: SitorDatabase) {
     private val _dbPlayer = MutableLiveData<DatabasePlayer>()
     val dbPlayer: LiveData<DatabasePlayer> get() = _dbPlayer
 
+    //controle if player logs in for the first time
     private val _registering = MutableLiveData<Boolean>()
     val registering: LiveData<Boolean> get() = _registering
 
@@ -60,7 +61,7 @@ class Repository(private val database: SitorDatabase) {
     val inventories: LiveData<List<Inventory>> get() = _inventories
     private val _player = MutableLiveData<Player>()
     val player: LiveData<Player> get() = _player
-    
+
     //This livedata is to check every page with internet connection, but in this current state of game its not needed.
     private val _networkConnection = MutableLiveData<Boolean>()
     val networkConnection: LiveData<Boolean> get() = _networkConnection
