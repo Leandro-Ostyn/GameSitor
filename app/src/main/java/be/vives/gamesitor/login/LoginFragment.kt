@@ -189,7 +189,7 @@ class LoginFragment : Fragment() {
         }
 
         loading.visibility = View.VISIBLE
-        loginViewModel.getPlayer(username.toLowerCase(Locale.ROOT))
+        loginViewModel.getPlayer(username)
             .observe(viewLifecycleOwner,
                 { databasePlayer ->
                     if (databasePlayer != null) {
